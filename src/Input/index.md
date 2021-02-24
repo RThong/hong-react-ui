@@ -1,5 +1,5 @@
 ---
-title: Button 按钮
+title: Input 输入框
 group:
   title: 通用
   path: /normal
@@ -7,13 +7,7 @@ group:
 
 ## Button
 
-按钮用于开始一个即时操作。
-
-### 合适使用
-
-响应用户点击行为，触发相应业务逻辑。
-
-### 代码示例
+Demo:
 
 <code src="./demo/Base"></code>
 
