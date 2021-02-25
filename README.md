@@ -1,4 +1,4 @@
-# hong-ui
+# hong-react-ui
 
 ## Getting Started
 

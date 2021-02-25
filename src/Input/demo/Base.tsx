@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from 'hong-ui';
+import { Input } from 'hong-react-ui';
 
 const Base = () => {
   return (

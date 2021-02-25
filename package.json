@@ -1,7 +1,6 @@
 {
-  "private": true,
-  "name": "hong-ui",
-  "version": "1.0.0",
+  "name": "hong-react-ui",
+  "version": "1.0.2",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
@@ -14,8 +13,7 @@
     "test:coverage": "umi-test --coverage"
   },
   "files": [
-    "dist/*/*.ts",
-    "dist/**.*"
+    "dist"
   ],
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
