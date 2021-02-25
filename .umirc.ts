@@ -11,7 +11,7 @@ export default defineConfig({
 
   base: '/hong-react-ui',
   publicPath: '/hong-react-ui/',
-  exportStatic: {},
+  // exportStatic: {},
   alias: {
     'hong-react-ui/dist/index.css': '../index.less',
   },
