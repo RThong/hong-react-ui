@@ -6,7 +6,7 @@ import { createScopedClasses } from '@/utils';
 interface ButtonProps extends Omit<React.ButtonHTMLAttributes<any>, 'type'> {
   // icon:
   // position:
-  type?: 'default' | 'primary' | 'ghost' | 'dashed' | 'danger' | 'link';
+  type?: 'default' | 'primary' | 'dashed' | 'text' | 'link';
   // size:
   // loading:
   // disabled:

@@ -14,4 +14,56 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  &,
+  &:focus {
+    outline: none;
+  }
+
+  &:focus,
+  &:hover {
+    color: @primary;
+    border: 1px solid @primary;
+  }
+
+  &-primary {
+    color: #fff;
+    background: @primary;
+    &:focus,
+    &:hover {
+      color: #fff;
+      background: lighten(@primary, 10%);
+      border-color: lighten(@primary, 10%);
+    }
+  }
+
+  &-dashed {
+    border-style: dashed;
+    &:focus,
+    &:hover {
+      border-color: @primary;
+      border-style: dashed;
+    }
+  }
+
+  &-text {
+    background: 0 0;
+    border-color: transparent;
+    &:focus,
+    &:hover {
+      color: @main;
+      background: @bg;
+      border-color: transparent;
+    }
+  }
+
+  &-link {
+    color: @primary;
+    border-color: transparent;
+    &:focus,
+    &:hover {
+      color: lighten(@primary, 15%);
+      border-color: transparent;
+    }
+  }
 }

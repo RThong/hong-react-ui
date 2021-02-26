@@ -9,8 +9,7 @@ export default defineConfig({
   outputPath: 'docs-dist',
   // more config: https://d.umijs.org/config
 
-  // base: '/hong-react-ui',
-  base: '/',
+  base: '/hong-react-ui',
   publicPath: '/hong-react-ui/',
   exportStatic: {},
   alias: {

@@ -15,6 +15,6 @@ group:
 
 ### 代码示例
 
-<code src="./demo/Base"></code>
+<code src="./demo/type"></code>
 
 More skills for writing demo: https://d.umijs.org/guide/demo-principle
