@@ -17,4 +17,12 @@ group:
 
 <code src="./demo/type"></code>
 
+<code src="./demo/icon"></code>
+
+<code src="./demo/size"></code>
+
+<API identifier="aaa></API>
+
+<!-- <API></API> -->
+
 More skills for writing demo: https://d.umijs.org/guide/demo-principle
