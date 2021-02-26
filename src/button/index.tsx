@@ -3,11 +3,21 @@ import classnames from 'classnames';
 import './index.less';
 import { createScopedClasses } from '@/utils';
 
-interface ButtonProps extends Omit<React.ButtonHTMLAttributes<any>, 'type'> {
+export interface ButtonProps
+  extends Omit<React.ButtonHTMLAttributes<any>, 'type'> {
   // icon:
   // position:
+  /**
+   * @description       设置按钮类型
+   * @default           default
+   */
   type?: 'default' | 'primary' | 'dashed' | 'text' | 'link';
-  // size:
+
+  /**
+   * @description       设置按钮大小
+   * @default           middle
+   */
+  size?: 'large' | 'middle' | 'small';
   // loading:
   // disabled:
   // ghost:
@@ -20,14 +30,16 @@ interface ButtonProps extends Omit<React.ButtonHTMLAttributes<any>, 'type'> {
 const sc = createScopedClasses('btn');
 
 const Button: React.FC<ButtonProps> = (props) => {
-  const { type, className, style, children } = props;
+  const { type, size, className, style, children, ...rest } = props;
 
   return (
     <button
       className={classnames(sc(), {
         [sc(type)]: !!type,
+        [sc(size)]: size && size !== 'middle',
       })}
       style={style}
+      {...rest}
     >
       {children}
     </button>
