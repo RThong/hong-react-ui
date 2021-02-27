@@ -1,6 +1,6 @@
 /**
  * title: 图标按钮
- * desc: 按钮有五种类型：默认按钮、主按钮、虚线按钮、文本按钮和链接按钮。
+ * desc: 设置内嵌 Icon 图标和位置。
  */
 import React from 'react';
 import { Button } from 'hong-react-ui';
@@ -11,8 +11,10 @@ const Demo = () => {
   return (
     <div>
       <Button>
-        <HomeOutlined />
-        Default
+        <span className="icon-demo">
+          <HomeOutlined />
+          <span>Default</span>
+        </span>
       </Button>
     </div>
   );
