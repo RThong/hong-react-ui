@@ -19,12 +19,33 @@ const LOCALE_TEXTS = {
   },
 };
 
-export default ({ identifier, export: expt }: IApiComponentProps) => {
+/**
+ * list 显示的api数组
+ */
+export default ({
+  identifier,
+  export: expt,
+  list,
+}: IApiComponentProps & { list?: string }) => {
   const data = useApiData(identifier);
 
-  console.log('【data】', identifier);
+  let arr;
+  try {
+    arr = JSON.parse(list);
+
+    if (Object.prototype.toString.call(arr) !== '[object Array]') {
+      arr = undefined;
+    }
+  } catch (error) {
+    arr = undefined;
+  }
 
   const { locale } = useContext(context);
+
+  const aaa = arr
+    ? data[expt].filter((row) => arr.find((_) => _ === row.identifier))
+    : data[expt];
+
   const texts = /^zh|cn$/i.test(locale)
     ? LOCALE_TEXTS['zh-CN']
     : LOCALE_TEXTS['en-US'];
@@ -42,7 +63,7 @@ export default ({ identifier, export: expt }: IApiComponentProps) => {
             </tr>
           </thead>
           <tbody>
-            {data[expt].map((row) => (
+            {aaa.map((row) => (
               <tr key={row.identifier}>
                 <td>{row.identifier}</td>
                 <td>{row.description || '--'}</td>
