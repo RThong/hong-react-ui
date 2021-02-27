@@ -21,8 +21,6 @@ group:
 
 <code src="./demo/size"></code>
 
-<API identifier="aaa></API>
-
-<!-- <API></API> -->
+<API list='["type", "size"]'></API>
 
 More skills for writing demo: https://d.umijs.org/guide/demo-principle
