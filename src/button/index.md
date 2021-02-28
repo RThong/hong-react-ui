@@ -31,4 +31,8 @@ group:
 
 <code src="./demo/ghost"></code>
 
-<API list='["type", "size", "ghost"]'></API>
+### 不可用状态
+
+<code src="./demo/disabled"></code>
+
+<API list='["type", "size", "ghost", "disabled"]'></API>
