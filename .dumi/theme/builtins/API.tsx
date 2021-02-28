@@ -42,7 +42,7 @@ export default ({
 
   const { locale } = useContext(context);
 
-  const aaa = arr
+  const showKeyList = arr
     ? data[expt].filter((row) => arr.find((_) => _ === row.identifier))
     : data[expt];
 
@@ -63,7 +63,7 @@ export default ({
             </tr>
           </thead>
           <tbody>
-            {aaa.map((row) => (
+            {showKeyList.map((row) => (
               <tr key={row.identifier}>
                 <td>{row.identifier}</td>
                 <td>{row.description || '--'}</td>

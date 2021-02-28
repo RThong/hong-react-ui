@@ -35,4 +35,8 @@ group:
 
 <code src="./demo/disabled"></code>
 
-<API list='["type", "size", "ghost", "disabled"]'></API>
+### 加载中状态
+
+<code src="./demo/loading"></code>
+
+<API list='["type", "size", "ghost", "disabled", "loading", "onClick", "htmlType", "className", "style"]'></API>
