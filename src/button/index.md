@@ -5,22 +5,30 @@ group:
   path: /normal
 ---
 
-## Button
+# Button
 
 按钮用于开始一个即时操作。
 
-### 合适使用
+## 何时使用
 
 响应用户点击行为，触发相应业务逻辑。
 
-### 代码示例
+## 代码示例
+
+### 按钮类型
 
 <code src="./demo/type"></code>
 
+### 图标按钮
+
 <code src="./demo/icon"></code>
+
+### 按钮尺寸
 
 <code src="./demo/size"></code>
 
-<API list='["type", "size"]'></API>
+### 幽灵按钮
 
-More skills for writing demo: https://d.umijs.org/guide/demo-principle
+<code src="./demo/ghost"></code>
+
+<API list='["type", "size", "ghost"]'></API>
