@@ -20,7 +20,11 @@ export interface ButtonProps
   size?: 'large' | 'middle' | 'small';
   // loading:
   // disabled:
-  // ghost:
+  /**
+   * @description       幽灵按钮
+   * @default           false
+   */
+  ghost?: boolean;
   // htmlType:
   // onClick:
   className?: string;
@@ -30,13 +34,14 @@ export interface ButtonProps
 const sc = createScopedClasses('btn');
 
 const Button: React.FC<ButtonProps> = (props) => {
-  const { type, size, className, style, children, ...rest } = props;
+  const { ghost, type, size, className, style, children, ...rest } = props;
 
   return (
     <button
       className={classnames(sc(), {
         [sc(type)]: !!type,
         [sc(size)]: size && size !== 'middle',
+        [sc('ghost')]: type !== 'text' && type !== 'link' && ghost,
       })}
       style={style}
       {...rest}

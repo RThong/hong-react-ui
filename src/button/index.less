@@ -26,8 +26,8 @@
   &:focus,
   &-default:hover,
   &:hover {
-    color: @primary;
-    border: 1px solid @primary;
+    color: lighten(@primary, 10%);
+    border: 1px solid lighten(@primary, 10%);
   }
 
   &-primary {
@@ -45,7 +45,7 @@
     border-style: dashed;
     &:focus,
     &:hover {
-      border-color: @primary;
+      border-color: lighten(@primary, 10%);
       border-style: dashed;
     }
   }
@@ -63,10 +63,11 @@
 
   &-link {
     color: @primary;
+    background: 0 0;
     border-color: transparent;
     &:focus,
     &:hover {
-      color: lighten(@primary, 15%);
+      color: lighten(@primary, 10%);
       border-color: transparent;
     }
   }
@@ -80,5 +81,35 @@
     padding: 6px 15px;
     font-size: 16px;
     line-height: 24px;
+  }
+
+  &-ghost {
+    color: #fff;
+    background: 0 0;
+    border-color: #fff;
+  }
+
+  &-primary&-ghost {
+    color: @primary;
+    text-shadow: none;
+    background: 0 0;
+    border-color: @primary;
+    &:hover {
+      color: lighten(@primary, 10%);
+      background: 0 0;
+      border-color: lighten(@primary, 10%);
+    }
+  }
+
+  &-danger&-ghost {
+    color: @primary;
+    text-shadow: none;
+    background: 0 0;
+    border-color: @primary;
+    &:hover {
+      color: lighten(@primary, 10%);
+      background: 0 0;
+      border-color: lighten(@primary, 10%);
+    }
   }
 }
