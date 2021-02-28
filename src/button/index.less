@@ -172,4 +172,39 @@
     border-color: transparent;
     box-shadow: none;
   }
+
+  &::before {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    z-index: 1;
+    display: none;
+    background: #fff;
+    border-radius: inherit;
+    opacity: 0.35;
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    content: '';
+    pointer-events: none;
+  }
+
+  &-loading {
+    position: relative;
+
+    &:not([disabled]) {
+      pointer-events: none;
+    }
+    &::before {
+      display: block;
+    }
+  }
+
+  &-loading-icon {
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    > span {
+      padding-right: 8px;
+    }
+  }
 }
