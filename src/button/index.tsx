@@ -19,7 +19,11 @@ export interface ButtonProps
    */
   size?: 'large' | 'middle' | 'small';
   // loading:
-  // disabled:
+  /**
+   * @description       按钮失效状态
+   * @default           false
+   */
+  disabled?: boolean;
   /**
    * @description       幽灵按钮
    * @default           false

@@ -23,6 +23,10 @@
     outline: none;
   }
 
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
   &:focus,
   &-default:hover,
   &:hover {
@@ -111,5 +115,61 @@
       background: 0 0;
       border-color: lighten(@primary, 10%);
     }
+  }
+
+  &[disabled],
+  &[disabled]:active,
+  &[disabled]:focus,
+  &[disabled]:hover {
+    color: @disabled;
+    text-shadow: none;
+    background: @bg;
+    border-color: @border;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  &-primary[disabled],
+  &-primary[disabled]:active,
+  &-primary[disabled]:focus,
+  &-primary[disabled]:hover {
+    color: @disabled;
+    text-shadow: none;
+    background: @bg;
+    border-color: @border;
+    box-shadow: none;
+  }
+
+  &-dashed[disabled],
+  &-dashed[disabled]:active,
+  &-dashed[disabled]:focus,
+  &-dashed[disabled]:hover {
+    color: @disabled;
+    text-shadow: none;
+    background: @bg;
+    border-color: @border;
+    box-shadow: none;
+  }
+
+  &-text[disabled],
+  &-text[disabled]:active,
+  &-text[disabled]:focus,
+  &-text[disabled]:hover {
+    color: @disabled;
+    text-shadow: none;
+    background: 0 0;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &-link[disabled],
+  &-link[disabled]:active,
+  &-link[disabled]:focus,
+  &-link[disabled]:hover {
+    color: @disabled;
+    text-shadow: none;
+    background: 0 0;
+    border-color: transparent;
+    box-shadow: none;
   }
 }
