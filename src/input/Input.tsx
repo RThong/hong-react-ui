@@ -1,6 +1,6 @@
 import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
@@ -41,7 +41,7 @@ export interface InputProps
 
 const sc = createScopedClasses('input');
 
-const Input: React.FC<InputProps> = (props) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     style,
     className,
@@ -53,25 +53,49 @@ const Input: React.FC<InputProps> = (props) => {
     ...rest
   } = props;
 
+  const [isFocus, setIsFocus] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>();
+
   const renderInput = () => {
     const getClass = () => {
       return {
-        [className]: className && !addonBefore && !addonAfter,
+        [className!]: className && !addonBefore && !addonAfter,
       };
     };
 
     if (!!prefix || !!suffix) {
       return (
         <span
+          onClick={() => inputRef.current?.focus()}
           style={style && !addonBefore && !addonAfter ? style : undefined}
           className={classnames(
             sc('affix-wrapper'),
-            { [sc('affix-wrapper-disabled')]: disabled },
+            {
+              [sc('affix-wrapper-disabled')]: disabled,
+              [sc('affix-wrapper-focused')]: isFocus,
+            },
             getClass(),
           )}
         >
           {prefix && <span className={classnames(sc('prefix'))}>{prefix}</span>}
-          <input className={classnames(sc())} disabled={disabled} {...rest} />
+          <input
+            // ref={(instance) => {
+            //   inputRef.current = instance;
+            //   ref.current = instance;
+            // }}
+            className={classnames(sc())}
+            disabled={disabled}
+            onFocus={(e) => {
+              props.onFocus?.(e);
+              setIsFocus(true);
+            }}
+            onBlur={(e) => {
+              props.onBlur?.(e);
+              setIsFocus(false);
+            }}
+            {...rest}
+          />
           {suffix && <span className={classnames(sc('suffix'))}>{suffix}</span>}
         </span>
       );
@@ -79,6 +103,12 @@ const Input: React.FC<InputProps> = (props) => {
 
     return (
       <input
+        ref={(instance) => {
+          inputRef.current = instance;
+          ref.current = instance;
+          console.log('【ref】', ref.current, instance);
+        }}
+        // ref={inputRef}
         disabled={disabled}
         style={style && !addonBefore && !addonAfter ? style : undefined}
         className={classnames(sc(), getClass())}
@@ -110,6 +140,6 @@ const Input: React.FC<InputProps> = (props) => {
   }
 
   return renderInput();
-};
+});
 
 export default Input;
