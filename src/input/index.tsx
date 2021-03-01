@@ -24,6 +24,11 @@ export interface InputProps
    * @description       	带有后缀图标的 input
    */
   suffix?: ReactNode;
+  /**
+   * @description       	禁用状态
+   * @default           false
+   */
+  disabled?: boolean;
 }
 
 const sc = createScopedClasses('input');
@@ -36,6 +41,7 @@ const Input: React.FC<InputProps> = (props) => {
     suffix,
     addonBefore,
     addonAfter,
+    disabled,
     ...rest
   } = props;
 
@@ -50,10 +56,14 @@ const Input: React.FC<InputProps> = (props) => {
       return (
         <span
           style={style && !addonBefore && !addonAfter ? style : undefined}
-          className={classnames(sc('affix-wrapper'), getClass())}
+          className={classnames(
+            sc('affix-wrapper'),
+            { [sc('affix-wrapper-disabled')]: disabled },
+            getClass(),
+          )}
         >
           {prefix && <span className={classnames(sc('prefix'))}>{prefix}</span>}
-          <input className={classnames(sc())} {...rest} />
+          <input className={classnames(sc())} disabled={disabled} {...rest} />
           {suffix && <span className={classnames(sc('suffix'))}>{suffix}</span>}
         </span>
       );
@@ -61,6 +71,7 @@ const Input: React.FC<InputProps> = (props) => {
 
     return (
       <input
+        disabled={disabled}
         style={style && !addonBefore && !addonAfter ? style : undefined}
         className={classnames(sc(), getClass())}
         {...rest}

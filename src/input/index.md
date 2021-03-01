@@ -24,8 +24,8 @@ group:
 
 <code src="./demo/addon"></code>
 
-### 前缀 / 后缀标签
+### 前缀和后缀
 
 <code src="./demo/affix"></code>
 
-<API list='["onChange", "addonBefore", "addonAfter", "prefix", "suffix"]'></API>
+<API list='["onChange", "addonBefore", "addonAfter", "prefix", "suffix", "disabled"]'></API>

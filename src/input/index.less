@@ -20,8 +20,13 @@
   transition: all 0.3s;
   font-feature-settings: 'tnum';
 
+  &:hover {
+    border-color: @hover;
+    border-right-width: 1px !important;
+  }
+
   &:focus {
-    border-color: @hover-color;
+    border-color: @hover;
     border-right-width: 1px !important;
     outline: 0;
   }
@@ -68,6 +73,12 @@
     border: 1px solid @border;
     border-radius: 2px;
     transition: all 0.3s;
+
+    &:hover {
+      z-index: 1;
+      border-color: @hover;
+      border-right-width: 1px !important;
+    }
   }
 
   &-prefix {
@@ -82,5 +93,13 @@
     padding: 0;
     border: none;
     outline: none;
+  }
+
+  &-affix-wrapper-disabled,
+  &[disabled] {
+    color: @disabled;
+    background-color: @bg;
+    cursor: not-allowed;
+    opacity: 1;
   }
 }

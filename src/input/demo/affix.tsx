@@ -1,6 +1,6 @@
 /**
- * title: 前缀 / 后缀标签
- * desc: 在输入框上添加前缀或后缀。
+ * title: 前缀和后缀
+ * desc: 在输入框上添加前缀或后缀图标。
  */
 import React from 'react';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -17,10 +17,12 @@ const Demo = () => {
       />
 
       <Input
-        style={{ width: 300 }}
+        style={{ width: 300, marginRight: 20 }}
         suffix={<LockOutlined />}
         placeholder="password"
       />
+
+      <Input style={{ width: 300 }} prefix="￥" suffix="RMB" disabled />
     </div>
   );
 };
