@@ -5,6 +5,10 @@ import React, { ReactNode } from 'react';
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
   /**
+   * @description       输入框内容
+   */
+  value?: string;
+  /**
    * @description       值改变时的回调
    */
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -35,6 +39,7 @@ const sc = createScopedClasses('input');
 
 const Input: React.FC<InputProps> = (props) => {
   const {
+    value,
     style,
     className,
     prefix,
