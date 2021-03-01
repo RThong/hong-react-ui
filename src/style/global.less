@@ -1,3 +1,4 @@
+@import './variables.less';
 *,
 *::before,
 *::after {
@@ -8,4 +9,8 @@
     'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::placeholder {
+  color: @placeholder;
 }
