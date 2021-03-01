@@ -5,7 +5,7 @@ import { createScopedClasses } from '@/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<any>, 'type'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   // icon:
   // position:
   /**
