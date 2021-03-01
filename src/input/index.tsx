@@ -9,6 +9,10 @@ export interface InputProps
    */
   value?: string;
   /**
+   * @description       输入框默认内容
+   */
+  defaultValue?: string;
+  /**
    * @description       值改变时的回调
    */
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -39,7 +43,6 @@ const sc = createScopedClasses('input');
 
 const Input: React.FC<InputProps> = (props) => {
   const {
-    value,
     style,
     className,
     prefix,

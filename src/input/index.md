@@ -28,4 +28,4 @@ group:
 
 <code src="./demo/affix"></code>
 
-<API list='["onChange", "addonBefore", "addonAfter", "prefix", "suffix", "disabled", "value"]'></API>
+<API list='["onChange", "addonBefore", "addonAfter", "prefix", "suffix", "disabled", "value", "defaultValue"]'></API>

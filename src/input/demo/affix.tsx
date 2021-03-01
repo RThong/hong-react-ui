@@ -11,18 +11,23 @@ const Demo = () => {
   return (
     <div>
       <Input
-        style={{ width: 300, marginRight: 20 }}
+        style={{ width: 300, marginRight: 20, marginBottom: 10 }}
         prefix={<UserOutlined />}
         placeholder="username"
       />
 
       <Input
-        style={{ width: 300, marginRight: 20 }}
+        style={{ width: 300, marginRight: 20, marginBottom: 10 }}
         suffix={<LockOutlined />}
         placeholder="password"
       />
 
-      <Input style={{ width: 300 }} prefix="￥" suffix="RMB" disabled />
+      <Input
+        style={{ width: 300, marginBottom: 10 }}
+        prefix="￥"
+        suffix="RMB"
+        disabled
+      />
     </div>
   );
 };
