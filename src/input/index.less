@@ -110,4 +110,23 @@
   &-search-icon {
     cursor: pointer;
   }
+
+  &-search:hover > & {
+    border-color: @hover;
+  }
+  &-search:hover > &-group-addon-after {
+    background: @hover;
+  }
+
+  &-search > &-group-addon-after {
+    left: -1px;
+    color: #fff;
+    background: @primary;
+    border-color: @primary;
+    cursor: pointer;
+    transition: all 0.3s;
+    // &:hover {
+    //   background: @hover;
+    // }
+  }
 }

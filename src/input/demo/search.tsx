@@ -10,11 +10,31 @@ const { Search } = Input;
 
 const Demo = () => {
   return (
-    <Search
-      style={{ width: 300 }}
-      placeholder="请输入搜索内容"
-      onSearch={(value) => console.log('value', value)}
-    />
+    <div>
+      <div style={{ marginBottom: 10 }}>
+        <Search
+          style={{ width: 300 }}
+          placeholder="请输入搜索内容"
+          onSearch={(value) => console.log(value)}
+        />
+      </div>
+      <div style={{ marginBottom: 10 }}>
+        <Search
+          style={{ width: 300 }}
+          placeholder="请输入搜索内容"
+          onSearch={(value) => console.log(value)}
+          enterButton
+        />
+      </div>
+      <div>
+        <Search
+          style={{ width: 300 }}
+          placeholder="请输入搜索内容"
+          onSearch={(value) => console.log(value)}
+          enterButton="Search"
+        />
+      </div>
+    </div>
   );
 };
 

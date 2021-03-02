@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import React, { useImperativeHandle, useRef } from 'react';
+import React, { ReactNode, useImperativeHandle, useRef } from 'react';
 import Input, { InputProps } from './Input';
 import Button from '../button/index';
 import { createScopedClasses } from '@/utils';
@@ -10,6 +10,11 @@ export interface SearchProps extends InputProps {
    * @description       点击搜索按钮 / 按下回车键时的回调
    */
   onSearch?: (value: string) => void;
+  /**
+   * @description       是否有确认按钮，可设为按钮文字。该属性会与 addonAfter 冲突。
+   * @default           false
+   */
+  enterButton?: boolean | ReactNode;
 }
 
 interface InputRef {
@@ -22,7 +27,7 @@ const sc = createScopedClasses('input');
 
 const Search: React.FC<SearchProps> = React.forwardRef<InputRef, SearchProps>(
   (props, ref) => {
-    const { onSearch, ...rest } = props;
+    const { addonAfter, onSearch, enterButton = false, ...rest } = props;
 
     const inputRef = useRef<InputRef>(null);
 
@@ -40,28 +45,37 @@ const Search: React.FC<SearchProps> = React.forwardRef<InputRef, SearchProps>(
       onSearch?.(inputRef.current?.input.value as string);
     };
 
+    const renderAddonAfter = () => {
+      if (enterButton) {
+        return (
+          <span onClick={handleSearch}>
+            {enterButton === true ? <SearchOutlined /> : enterButton}
+          </span>
+        );
+      }
+      return undefined;
+    };
+
     return (
       <Input
         ref={inputRef}
         className={classnames(sc('search'))}
         suffix={
-          <span
-            className={classnames(sc('search-icon'))}
-            onClick={(e) => {
-              handleSearch();
-              e.stopPropagation();
-            }}
-          >
-            <SearchOutlined />
-          </span>
+          !enterButton ? (
+            <span
+              className={classnames(sc('search-icon'))}
+              onClick={(e) => {
+                handleSearch();
+                e.stopPropagation();
+              }}
+            >
+              <SearchOutlined />
+            </span>
+          ) : undefined
         }
         onPressEnter={handleSearch}
         {...rest}
-        // addonAfter={
-        //   <Button>
-        //     <SearchOutlined />
-        //   </Button>
-        // }
+        addonAfter={renderAddonAfter()}
       />
     );
   },
