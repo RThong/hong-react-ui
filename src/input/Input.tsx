@@ -45,7 +45,7 @@ export interface InputProps
 
 const sc = createScopedClasses('input');
 
-interface InputRef {
+export interface InputRef {
   focus: () => void;
   blur: () => void;
   input: HTMLInputElement;

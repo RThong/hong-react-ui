@@ -17,7 +17,7 @@ export interface SearchProps extends InputProps {
   enterButton?: boolean | ReactNode;
 }
 
-interface InputRef {
+export interface SearchRef {
   focus: () => void;
   blur: () => void;
   input: HTMLInputElement;
@@ -25,11 +25,11 @@ interface InputRef {
 
 const sc = createScopedClasses('input');
 
-const Search: React.FC<SearchProps> = React.forwardRef<InputRef, SearchProps>(
+const Search: React.FC<SearchProps> = React.forwardRef<SearchRef, SearchProps>(
   (props, ref) => {
     const { addonAfter, onSearch, enterButton = false, ...rest } = props;
 
-    const inputRef = useRef<InputRef>(null);
+    const inputRef = useRef<SearchRef>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {

@@ -18,7 +18,7 @@ export interface TextAreaProps
   onPressEnter?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
-interface TextAreaRef {
+export interface TextAreaRef {
   focus: () => void;
   blur: () => void;
   textarea?: HTMLTextAreaElement;
