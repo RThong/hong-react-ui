@@ -1,6 +1,6 @@
 import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useImperativeHandle, useRef, useState } from 'react';
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
@@ -41,7 +41,12 @@ export interface InputProps
 
 const sc = createScopedClasses('input');
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+interface InputRef {
+  focus: () => void;
+  blur: () => void;
+}
+
+const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     style,
     className,
@@ -55,7 +60,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   const [isFocus, setIsFocus] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  /**
+   * useImperativeHandle 配合  forwardRef将input实例方法暴露给外部调用
+   */
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      inputRef.current?.focus();
+    },
+    blur: () => {
+      inputRef.current?.blur();
+    },
+  }));
 
   const renderInput = () => {
     const getClass = () => {
@@ -80,10 +97,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         >
           {prefix && <span className={classnames(sc('prefix'))}>{prefix}</span>}
           <input
-            // ref={(instance) => {
-            //   inputRef.current = instance;
-            //   ref.current = instance;
-            // }}
+            ref={inputRef}
             className={classnames(sc())}
             disabled={disabled}
             onFocus={(e) => {
@@ -103,12 +117,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
     return (
       <input
-        ref={(instance) => {
-          inputRef.current = instance;
-          ref.current = instance;
-          console.log('【ref】', ref.current, instance);
-        }}
-        // ref={inputRef}
+        ref={inputRef}
         disabled={disabled}
         style={style && !addonBefore && !addonAfter ? style : undefined}
         className={classnames(sc(), getClass())}
