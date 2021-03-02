@@ -32,6 +32,13 @@ group:
 
 <code src="./demo/search"></code>
 
+### 文本域
+
+<code src="./demo/textarea"></code>
+
+<!-- ### 适应文本高度的文本域
+
+
 <!-- <API src="./Input.tsx" list='["onChange", "addonBefore", "addonAfter", "prefix", "suffix", "disabled", "value", "defaultValue"]'></API> -->
 
 ## API
@@ -50,6 +57,8 @@ group:
 | disabled     | 禁用状态                     | `boolean`                                            | `false` |
 | onPressEnter | 按下回车的回调               | `(e: React.KeyboardEvent<HTMLInputElement>) => void` | `false` |
 
+Input 的其他属性和 React 自带的 input 一致。
+
 ### Input.Search
 
 <!-- <API className="test" src="./Search.tsx" list='["onSearch"]'></API> -->
@@ -58,6 +67,18 @@ group:
 | ----------- | ---------------------------------------------------------- | -------------------------- | ------- |
 | onSearch    | 点击搜索按钮 / 按下回车键时的回调                          | `(value: string) => void`  | `--`    |
 | enterButton | 是否有确认按钮，可设为按钮文字。该属性会与 addonAfter 冲突 | `"boolean" \| "ReactNode"` | `false` |
+
+其余属性和 Input 一致。
+
+### Input.TextArea
+
+| 属性名       | 描述           | 类型                                                 | 默认值 |
+| ------------ | -------------- | ---------------------------------------------------- | ------ |
+| defaultValue | 输入框默认内容 | `string`                                             | `--`   |
+| value        | 输入框内容     | `string`                                             | `--`   |
+| onPressEnter | 按下回车的回调 | `(e: React.KeyboardEvent<HTMLInputElement>) => void` | `--`   |
+
+`Input.TextArea` 的其他属性和浏览器自带的 textarea 一致。
 
 ### Method
 

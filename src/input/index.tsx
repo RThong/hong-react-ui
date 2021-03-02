@@ -1,6 +1,12 @@
 import Input from './Input';
 import Search from './Search';
+import TextArea from './TextArea';
 
-Input.Search = Search;
+export default Object.assign(Input, { Search, TextArea });
 
-export default Input;
+// export default Input;
+
+// Input.Search = Search;
+// Input.TextArea = TextArea;
+
+// export default Input;

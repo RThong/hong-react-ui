@@ -125,8 +125,15 @@
     border-color: @primary;
     cursor: pointer;
     transition: all 0.3s;
-    // &:hover {
-    //   background: @hover;
-    // }
+  }
+
+  textarea& {
+    max-width: 100%;
+    height: auto;
+    min-height: 32px;
+    line-height: 20px;
+    vertical-align: bottom;
+    -webkit-transition: all 0.3s, height 0s;
+    transition: all 0.3s, height 0s;
   }
 }
