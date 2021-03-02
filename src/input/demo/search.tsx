@@ -1,25 +1,20 @@
 /**
- * title: 前置 / 后置标签
- * desc: 用于配置一些固定组合。
+ * title: 搜索框
+ * desc: 带有搜索按钮的输入框。
  */
 import React from 'react';
 import { Input } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
 
-import { SettingOutlined } from '@ant-design/icons';
-
 const { Search } = Input;
 
 const Demo = () => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <Search />
-    </div>
+    <Search
+      style={{ width: 300 }}
+      placeholder="请输入搜索内容"
+      onSearch={(value) => console.log('value', value)}
+    />
   );
 };
 

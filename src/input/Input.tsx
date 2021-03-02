@@ -37,6 +37,10 @@ export interface InputProps
    * @default           false
    */
   disabled?: boolean;
+  /**
+   * @description       	按下回车的回调
+   */
+  onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const sc = createScopedClasses('input');
@@ -44,6 +48,7 @@ const sc = createScopedClasses('input');
 interface InputRef {
   focus: () => void;
   blur: () => void;
+  input: HTMLInputElement;
 }
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
@@ -55,6 +60,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     addonBefore,
     addonAfter,
     disabled,
+    onPressEnter,
+    onKeyDown,
     ...rest
   } = props;
 
@@ -72,7 +79,15 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     blur: () => {
       inputRef.current?.blur();
     },
+    input: inputRef.current as HTMLInputElement,
   }));
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (onPressEnter && e.key === 'Enter') {
+      onPressEnter(e);
+    }
+    onKeyDown?.(e);
+  };
 
   const renderInput = () => {
     const getClass = () => {
@@ -108,6 +123,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
               props.onBlur?.(e);
               setIsFocus(false);
             }}
+            onKeyDown={handleKeyDown}
             {...rest}
           />
           {suffix && <span className={classnames(sc('suffix'))}>{suffix}</span>}
@@ -121,6 +137,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         disabled={disabled}
         style={style && !addonBefore && !addonAfter ? style : undefined}
         className={classnames(sc(), getClass())}
+        onKeyDown={handleKeyDown}
         {...rest}
       />
     );

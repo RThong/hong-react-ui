@@ -38,21 +38,29 @@ group:
 
 ### Input
 
-| 属性名       | 描述                         | 类型                                             | 默认值  |
-| ------------ | ---------------------------- | ------------------------------------------------ | ------- |
-| value        | 输入框内容                   | `string`                                         | `--`    |
-| defaultValue | 输入框默认内容               | `string`                                         | `--`    |
-| onChange     | 值改变时的回调               | `(event: ChangeEvent<HTMLInputElement>) => void` | `--`    |
-| addonBefore  | 带标签的 input，设置前置标签 | `ReactNode`                                      | `--`    |
-| addonAfter   | 带标签的 input，设置后置标签 | `ReactNode`                                      | `--`    |
-| prefix       | 带有前缀图标的 input         | `ReactNode`                                      | `--`    |
-| suffix       | 带有后缀图标的 input         | `ReactNode`                                      | `--`    |
-| disabled     | 禁用状态                     | `boolean`                                        | `false` |
+| 属性名       | 描述                         | 类型                                                 | 默认值  |
+| ------------ | ---------------------------- | ---------------------------------------------------- | ------- |
+| value        | 输入框内容                   | `string`                                             | `--`    |
+| defaultValue | 输入框默认内容               | `string`                                             | `--`    |
+| onChange     | 值改变时的回调               | `(e: React.ChangeEvent<HTMLInputElement>) => void`   | `--`    |
+| addonBefore  | 带标签的 input，设置前置标签 | `ReactNode`                                          | `--`    |
+| addonAfter   | 带标签的 input，设置后置标签 | `ReactNode`                                          | `--`    |
+| prefix       | 带有前缀图标的 input         | `ReactNode`                                          | `--`    |
+| suffix       | 带有后缀图标的 input         | `ReactNode`                                          | `--`    |
+| disabled     | 禁用状态                     | `boolean`                                            | `false` |
+| onPressEnter | 按下回车的回调               | `(e: React.KeyboardEvent<HTMLInputElement>) => void` | `false` |
 
 ### Input.Search
 
 <!-- <API className="test" src="./Search.tsx" list='["onSearch"]'></API> -->
 
-| 属性名   | 描述                              | 类型                     | 默认值 |
-| -------- | --------------------------------- | ------------------------ | ------ |
-| onSearch | 点击搜索按钮 / 按下回车键时的回调 | `function(value, event)` | `--`   |
+| 属性名   | 描述                              | 类型                      | 默认值 |
+| -------- | --------------------------------- | ------------------------- | ------ |
+| onSearch | 点击搜索按钮 / 按下回车键时的回调 | `(value: string) => void` | `--`   |
+
+### Method
+
+| 名称  | 说明     | 参数 |
+| ----- | -------- | ---- |
+| blur  | 取消焦点 | `--` |
+| focus | 获取焦点 | `--` |
