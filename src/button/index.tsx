@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { CSSProperties } from 'react';
 import classnames from 'classnames';
 import './index.less';
 import { createScopedClasses } from '@/utils';
