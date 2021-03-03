@@ -107,6 +107,32 @@
       content: ' ';
     }
   }
+  &-wrapper&-wrapper-disabled {
+    cursor: not-allowed;
+  }
+
+  &-disabled {
+    cursor: not-allowed;
+  }
+
+  &-disabled &-input {
+    cursor: not-allowed;
+  }
+
+  &-disabled &-inner {
+    background-color: @bg;
+    border-color: @border !important;
+    &::after {
+      border-color: @border;
+      border-collapse: separate;
+      animation-name: none;
+    }
+  }
+
+  &-disabled + span {
+    color: @disabled;
+    cursor: not-allowed;
+  }
 }
 
 @keyframes checkboxEffect {

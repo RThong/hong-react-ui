@@ -20,10 +20,22 @@ group:
 
 <code src="./demo/base"></code>
 
+### 不可用
+
+<code src="./demo/disabled"></code>
+
+### 受控的 Checkbox
+
+<code src="./demo/controlled"></code>
+
 ## API
 
 ### Checkbox
 
-| 属性名  | 描述             | 类型      | 默认值  |
-| ------- | ---------------- | --------- | ------- |
-| checked | 指定当前是否选中 | `boolean` | `false` |
+| 属性名         | 描述             | 类型                                               | 默认值  |
+| -------------- | ---------------- | -------------------------------------------------- | ------- |
+| autoFocus      | 自动获取焦点     | `boolean`                                          | `false` |
+| checked        | 指定当前是否选中 | `boolean`                                          | `false` |
+| defaultChecked | 初始是否选中     | `boolean`                                          | `false` |
+| disabled       | 失效状态         | `boolean`                                          | `false` |
+| onChange       | 变化时回调函数   | `(e: React.ChangeEvent<HTMLInputElement>) => void` | `--`    |
