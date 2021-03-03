@@ -8,6 +8,8 @@ export interface CheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   autoFocus?: boolean;
   disabled?: boolean;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export interface CheckboxRef {
@@ -26,6 +28,8 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
     onChange,
     defaultChecked = false,
     children,
+    className,
+    style,
     ...rest
   } = props;
 
@@ -53,10 +57,9 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
   }, [autoFocus]);
 
   useEffect(() => {
-    if (checkedProps === undefined) {
-      return;
+    if (checkedProps !== undefined) {
+      setChecked(checkedProps);
     }
-    setChecked(checkedProps);
   }, [checkedProps]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +69,21 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
 
     onChange?.(e);
 
-    setChecked(e.target.checked);
+    if (checkedProps === undefined) {
+      setChecked(e.target.checked);
+    }
   };
 
   return (
     <label
-      className={classnames(sc('wrapper'), {
-        [sc('wrapper-disabled')]: disabled,
-      })}
+      className={classnames(
+        sc('wrapper'),
+        {
+          [sc('wrapper-disabled')]: disabled,
+        },
+        className,
+      )}
+      style={style}
     >
       <span
         className={classnames(sc(), {

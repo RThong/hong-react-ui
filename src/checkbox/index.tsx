@@ -1,3 +1,4 @@
 import Checkbox from './Checkbox';
+import Group from './Group';
 
-export default Checkbox;
+export default Object.assign(Checkbox, { Group });

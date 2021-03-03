@@ -28,6 +28,10 @@ group:
 
 <code src="./demo/controlled"></code>
 
+### Checkbox 组
+
+<code src="./demo/group"></code>
+
 ## API
 
 ### Checkbox
