@@ -1,7 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons';
 import React, { ReactNode, useImperativeHandle, useRef } from 'react';
 import Input, { InputProps } from './Input';
-import Button from '../button/index';
 import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
 
@@ -17,68 +16,62 @@ export interface SearchProps extends InputProps {
   enterButton?: boolean | ReactNode;
 }
 
-export interface SearchRef {
-  focus: () => void;
-  blur: () => void;
-  input: HTMLInputElement;
-}
-
 const sc = createScopedClasses('input');
 
-const Search: React.FC<SearchProps> = React.forwardRef<SearchRef, SearchProps>(
-  (props, ref) => {
-    const { addonAfter, onSearch, enterButton = false, ...rest } = props;
+const Search: React.FC<SearchProps> = React.forwardRef<
+  HTMLInputElement,
+  SearchProps
+>((props, ref) => {
+  const { addonAfter, onSearch, enterButton = false, ...rest } = props;
 
-    const inputRef = useRef<SearchRef>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    useImperativeHandle(ref, () => ({
-      focus: () => {
-        inputRef.current?.focus();
-      },
-      blur: () => {
-        inputRef.current?.blur();
-      },
-      input: inputRef.current?.input as HTMLInputElement,
-    }));
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
-    const handleSearch = () => {
-      onSearch?.(inputRef.current?.input.value as string);
-    };
+  const handleSearch = () => {
+    onSearch?.(inputRef.current?.value as string);
+  };
 
-    const renderAddonAfter = () => {
-      if (enterButton) {
-        return (
-          <span onClick={handleSearch}>
-            {enterButton === true ? <SearchOutlined /> : enterButton}
+  const renderAddonAfter = () => {
+    if (enterButton) {
+      return (
+        <span
+          className={classnames(sc('search-btn'))}
+          onClick={() => {
+            console.log('【e】');
+
+            handleSearch();
+          }}
+        >
+          {enterButton === true ? <SearchOutlined /> : enterButton}
+        </span>
+      );
+    }
+    return undefined;
+  };
+
+  return (
+    <Input
+      ref={inputRef}
+      className={classnames(sc('search'))}
+      suffix={
+        !enterButton ? (
+          <span
+            className={classnames(sc('search-icon'))}
+            onClick={(e) => {
+              handleSearch();
+              e.stopPropagation();
+            }}
+          >
+            <SearchOutlined />
           </span>
-        );
+        ) : undefined
       }
-      return undefined;
-    };
-
-    return (
-      <Input
-        ref={inputRef}
-        className={classnames(sc('search'))}
-        suffix={
-          !enterButton ? (
-            <span
-              className={classnames(sc('search-icon'))}
-              onClick={(e) => {
-                handleSearch();
-                e.stopPropagation();
-              }}
-            >
-              <SearchOutlined />
-            </span>
-          ) : undefined
-        }
-        onPressEnter={handleSearch}
-        {...rest}
-        addonAfter={renderAddonAfter()}
-      />
-    );
-  },
-);
+      onPressEnter={handleSearch}
+      {...rest}
+      addonAfter={renderAddonAfter()}
+    />
+  );
+});
 
 export default Search;
