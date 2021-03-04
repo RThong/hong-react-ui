@@ -57,9 +57,9 @@ const Group: React.FC<GroupProps> = (props) => {
     }
   }, [props]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, v: string) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     /**
-     * 将当前改变的option对应名称和checked  与   当前group checked数组转为对象
+     * 将当前改变的option对应值和checked  与   当前group checked数组转为对象
      * 方便比较哪些被选择
      */
     const obj = value.reduce((prev, cur) => {
@@ -68,9 +68,9 @@ const Group: React.FC<GroupProps> = (props) => {
       return prev;
     }, {});
     // @ts-ignore
-    obj[v] = e.target.checked;
+    obj[e.target.value] = e.target.checked;
 
-    // 将label  checked状态中值为false的去除  拿到的key数组就是所需的value
+    // 将obj  checked状态中值为false的去除  拿到的key数组就是所需的value
     const res = Object.entries(obj)
       .filter(([key, v]) => v)
       .map(([key, v]) => key);
@@ -89,9 +89,10 @@ const Group: React.FC<GroupProps> = (props) => {
         <Checkbox
           key={option.value}
           checked={value.indexOf(option.value) !== -1}
-          onChange={(e) => handleChange(e, option.value)}
+          onChange={(e) => handleChange(e)}
           className={classnames(sc('group-item'))}
           disabled={disabled || option.disabled || false}
+          value={option.value}
         >
           {option.label}
         </Checkbox>

@@ -11,6 +11,7 @@ export interface CheckboxProps {
   style?: React.CSSProperties;
   className?: string;
   children?: React.ReactNode;
+  value?: string;
 }
 
 const sc = createScopedClasses('checkbox');
@@ -20,6 +21,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<
   CheckboxProps
 > = (props, ref) => {
   const {
+    value,
     checked: checkedProps,
     disabled = false,
     autoFocus = false,
@@ -86,6 +88,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<
           className={classnames(sc('input'))}
           onChange={handleChange}
           checked={checked}
+          value={value}
         />
         <span className={classnames(sc('inner'))} />
       </span>
