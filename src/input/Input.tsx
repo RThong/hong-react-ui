@@ -45,13 +45,10 @@ export interface InputProps
 
 const sc = createScopedClasses('input');
 
-export interface InputRef {
-  focus: () => void;
-  blur: () => void;
-  input: HTMLInputElement;
-}
-
-const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
+const InternalInput: React.ForwardRefRenderFunction<
+  HTMLInputElement,
+  InputProps
+> = (props, ref) => {
   const {
     style,
     className,
@@ -69,18 +66,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  /**
-   * useImperativeHandle 配合  forwardRef将input实例方法暴露给外部调用
-   */
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      inputRef.current?.focus();
-    },
-    blur: () => {
-      inputRef.current?.blur();
-    },
-    input: inputRef.current as HTMLInputElement,
-  }));
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (onPressEnter && e.key === 'Enter') {
@@ -166,6 +152,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   }
 
   return renderInput();
-});
+};
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(InternalInput);
 
 export default Input;

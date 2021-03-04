@@ -18,47 +18,39 @@ export interface TextAreaProps
   onPressEnter?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
-export interface TextAreaRef {
-  focus: () => void;
-  blur: () => void;
-  textarea?: HTMLTextAreaElement;
-}
-
 const sc = createScopedClasses('input');
 
-const TextArea = React.forwardRef<TextAreaRef, TextAreaProps>((props, ref) => {
-  const {
-    defaultValue,
-    value,
-    onPressEnter,
-    className,
-    style,
-    ...rest
-  } = props;
+const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  (props, ref) => {
+    const {
+      defaultValue,
+      value,
+      onPressEnter,
+      className,
+      style,
+      ...rest
+    } = props;
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useImperativeHandle(ref, () => ({
-    textarea: textareaRef.current as HTMLTextAreaElement,
-    focus: () => textareaRef.current?.focus(),
-    blur: () => textareaRef.current?.blur(),
-  }));
+    useImperativeHandle(ref, () => textareaRef.current as HTMLTextAreaElement);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (onPressEnter && e.key === 'Enter') {
-      onPressEnter(e);
-    }
-  };
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (onPressEnter && e.key === 'Enter') {
+        onPressEnter(e);
+      }
+    };
 
-  return (
-    <textarea
-      ref={textareaRef}
-      value={value || defaultValue}
-      className={classnames(sc(), className)}
-      onKeyDown={handleKeyDown}
-      {...rest}
-    />
-  );
-});
+    return (
+      <textarea
+        ref={textareaRef}
+        value={value || defaultValue}
+        className={classnames(sc(), className)}
+        onKeyDown={handleKeyDown}
+        {...rest}
+      />
+    );
+  },
+);
 
 export default TextArea;
