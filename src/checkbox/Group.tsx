@@ -13,6 +13,7 @@ export interface GroupProps {
   options?: Array<string | Option>;
   value?: string[];
   defaultValue?: string[];
+  disabled?: boolean;
   onChange?: (checkedValue: string[]) => void;
 
   style?: React.CSSProperties;
@@ -28,6 +29,9 @@ const Group: React.FC<GroupProps> = (props) => {
     defaultValue = [],
     value: valueProps = [],
     onChange,
+    style,
+    className,
+    disabled = false,
   } = props;
 
   const [value, setValue] = useState(
@@ -71,8 +75,6 @@ const Group: React.FC<GroupProps> = (props) => {
       .filter(([key, v]) => v)
       .map(([key, v]) => key);
 
-    console.log('res', res);
-
     onChange?.(res);
 
     // 在非完全受控的情况下去改变内部状态
@@ -82,13 +84,14 @@ const Group: React.FC<GroupProps> = (props) => {
   };
 
   return (
-    <div className={classnames(sc('group'))}>
+    <div className={classnames(sc('group'), className)} style={style}>
       {localOptions.map((option) => (
         <Checkbox
           key={option.value}
           checked={value.indexOf(option.value) !== -1}
           onChange={(e) => handleChange(e, option.value)}
           className={classnames(sc('group-item'))}
+          disabled={disabled || option.disabled || false}
         >
           {option.label}
         </Checkbox>

@@ -6,19 +6,44 @@ import React, { useRef, useState } from 'react';
 import { Checkbox } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
 
+const plainOptions = ['Apple', 'Pear', 'Orange'];
+const options = [
+  { label: 'Apple', value: 'Apple' },
+  { label: 'Pear', value: 'Pear', disabled: true },
+  { label: 'Orange', value: 'Orange' },
+];
+const optionsWithDisabled = [
+  { label: 'Apple', value: 'Apple' },
+  { label: 'Pear', value: 'Pear' },
+  { label: 'Orange', value: 'Orange', disabled: false },
+];
+
 const Demo = () => {
-  const [value, setValue] = useState(['apple', 'peach']);
+  const onChange = (checkedValues: string[]) => {
+    console.log('checked = ', checkedValues);
+  };
 
   return (
     <div>
       <Checkbox.Group
-        options={['apple', 'peach']}
-        // defaultValue={['apple']}
-        value={value}
-        onChange={(value) => {
-          console.log('onchange', value);
-          setValue(value);
-        }}
+        options={plainOptions}
+        defaultValue={['Apple']}
+        onChange={onChange}
+      />
+      <br />
+      <br />
+      <Checkbox.Group
+        options={options}
+        defaultValue={['Pear']}
+        onChange={onChange}
+      />
+      <br />
+      <br />
+      <Checkbox.Group
+        options={optionsWithDisabled}
+        disabled
+        defaultValue={['Apple']}
+        onChange={onChange}
       />
     </div>
   );

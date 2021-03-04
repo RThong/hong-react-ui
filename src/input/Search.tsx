@@ -38,8 +38,6 @@ const Search: React.FC<SearchProps> = React.forwardRef<
         <span
           className={classnames(sc('search-btn'))}
           onClick={() => {
-            console.log('【e】');
-
             handleSearch();
           }}
         >
