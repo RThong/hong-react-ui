@@ -24,6 +24,10 @@ group:
 
 <code src="./demo/disabled"></code>
 
+### 单选组合
+
+<code src="./demo/group"></code>
+
 ## API
 
 ### Radio

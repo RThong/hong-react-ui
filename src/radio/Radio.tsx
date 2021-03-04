@@ -4,12 +4,14 @@ import { createScopedClasses } from '@/utils';
 
 import './index.less';
 
-interface RadioProps {
+export interface RadioProps {
   checked?: boolean;
   defaultChecked?: boolean;
   autoFocus?: boolean;
   disabled?: boolean;
-  value?: boolean;
+
+  children?: React.ReactNode;
+  value?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const sc = createScopedClasses('radio');
@@ -19,6 +21,7 @@ const InternalRadio: React.ForwardRefRenderFunction<
   RadioProps
 > = (props, ref) => {
   const {
+    value,
     checked: checkedProps,
     defaultChecked = false,
     disabled = false,
@@ -26,6 +29,7 @@ const InternalRadio: React.ForwardRefRenderFunction<
     onChange,
     children,
   } = props;
+  console.log('【Radio】', props);
 
   const [checked, setChecked] = useState(
     'checked' in props ? checkedProps : defaultChecked,
@@ -77,7 +81,7 @@ const InternalRadio: React.ForwardRefRenderFunction<
           ref={inputRef}
           type="radio"
           className={classnames(sc('input'))}
-          // value=""
+          value={value}
           checked={checked}
           onChange={handleChange}
         />
