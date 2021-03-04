@@ -43,3 +43,23 @@ group:
 | defaultChecked | 初始是否选中     | `boolean`                                          | `false` |
 | disabled       | 失效状态         | `boolean`                                          | `false` |
 | onChange       | 变化时回调函数   | `(e: React.ChangeEvent<HTMLInputElement>) => void` | `--`    |
+
+### Checkbox.Group
+
+| 属性名       | 描述           | 类型                                | 默认值  |
+| ------------ | -------------- | ----------------------------------- | ------- |
+| defaultValue | 默认选中的选项 | `string[]`                          | `[]`    |
+| disabled     | 整组失效       | `boolean`                           | `false` |
+| options      | 指定可选项     | `string[] \| Option[]`              | `[]`    |
+| value        | 指定选中的选项 | `string[]`                          | `[]`    |
+| onChange     | 变化时回调函数 | `(checkedValue: string[]) => void;` | `--`    |
+
+#### Option
+
+```jsx | pure
+interface Option {
+  label: string;
+  value: string;
+  disabled?: boolean;
+}
+```

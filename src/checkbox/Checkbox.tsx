@@ -10,17 +10,15 @@ export interface CheckboxProps {
   disabled?: boolean;
   style?: React.CSSProperties;
   className?: string;
-}
-
-export interface CheckboxRef {
-  blur: () => void;
-  focus: () => void;
-  checkbox: HTMLInputElement;
+  children?: React.ReactNode;
 }
 
 const sc = createScopedClasses('checkbox');
 
-const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
+const InternalCheckbox: React.ForwardRefRenderFunction<
+  HTMLInputElement,
+  CheckboxProps
+> = (props, ref) => {
   const {
     checked: checkedProps,
     disabled = false,
@@ -30,7 +28,6 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
     children,
     className,
     style,
-    ...rest
   } = props;
 
   const [checked, setChecked] = useState(
@@ -38,15 +35,7 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      inputRef.current?.focus();
-    },
-    blur: () => {
-      inputRef.current?.blur();
-    },
-    checkbox: inputRef.current as HTMLInputElement,
-  }));
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   useEffect(() => {
     if (!autoFocus) {
@@ -103,6 +92,10 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>((props, ref) => {
       {children && <span>{children}</span>}
     </label>
   );
-});
+};
+
+const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+  InternalCheckbox,
+);
 
 export default Checkbox;

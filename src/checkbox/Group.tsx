@@ -17,6 +17,7 @@ export interface GroupProps {
 
   style?: React.CSSProperties;
   className?: string;
+  children?: React.ReactNode;
 }
 
 const sc = createScopedClasses('checkbox');
@@ -43,6 +44,9 @@ const Group: React.FC<GroupProps> = (props) => {
     return option;
   });
 
+  /**
+   * 完全受控时根据外部的value去改变状态
+   */
   useEffect(() => {
     if ('value' in props) {
       setValue(props.value || []);
@@ -71,6 +75,7 @@ const Group: React.FC<GroupProps> = (props) => {
 
     onChange?.(res);
 
+    // 在非完全受控的情况下去改变内部状态
     if (!('value' in props)) {
       setValue(res);
     }
