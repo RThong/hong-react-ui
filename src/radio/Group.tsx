@@ -3,26 +3,24 @@ import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 import './index.less';
 import Radio from './Radio';
-import { RadioChangeEvent } from './interface';
+import { RadioChangeEvent, RadioGroupProps } from './interface';
 
-interface Option {
-  label: string;
-  value: any;
-  disabled?: boolean;
-}
-
-export interface RadioGroupProps {
-  options?: Array<string | Option>;
-  defaultValue?: any;
-  value?: any;
-  onChange?: (e: RadioChangeEvent) => void;
-}
 // ant-radio-group ant-radio-group-outline
 
 const sc = createScopedClasses('radio');
 
 const Group: React.FC<RadioGroupProps> = (props) => {
-  const { value: valueProps, defaultValue, options = [], onChange } = props;
+  const {
+    buttonStyle = 'outline',
+    optionType = 'default',
+    value: valueProps,
+    defaultValue,
+    options = [],
+    onChange,
+    disabled = false,
+    style,
+    className,
+  } = props;
 
   const [value, setValue] = useState<any>(
     'value' in props ? valueProps : defaultValue,
@@ -52,18 +50,29 @@ const Group: React.FC<RadioGroupProps> = (props) => {
     }
   };
 
+  const renderOptionsRadio = () => {
+    const optionsPrefixCls = optionType === 'button' ? `${sc()}-button` : sc();
+
+    return localOptions.map((option) => (
+      <Radio
+        prefixCls={optionsPrefixCls}
+        key={option.value}
+        checked={value === option.value}
+        onChange={handleChange}
+        value={option.value}
+        disabled={disabled || option.disabled || false}
+      >
+        {option.label}
+      </Radio>
+    ));
+  };
+
   return (
-    <div className={classnames(sc('group'))}>
-      {localOptions.map((option) => (
-        <Radio
-          key={option.value}
-          checked={value === option.value}
-          onChange={(e) => handleChange(e)}
-          value={option.value}
-        >
-          {option.label}
-        </Radio>
-      ))}
+    <div
+      className={classnames(sc('group'), sc(`group-${buttonStyle}`), className)}
+      style={style}
+    >
+      {renderOptionsRadio()}
     </div>
   );
 };

@@ -28,14 +28,35 @@ group:
 
 <code src="./demo/group"></code>
 
+### 按钮样式
+
+<code src="./demo/style"></code>
+
+### 填底的按钮样式
+
+<code src="./demo/solid"></code>
+
 ## API
 
 ### Radio
 
-| 属性名         | 描述             | 类型                                               | 默认值  |
-| -------------- | ---------------- | -------------------------------------------------- | ------- |
-| autoFocus      | 自动获取焦点     | `boolean`                                          | `false` |
-| checked        | 指定当前是否选中 | `boolean`                                          | `false` |
-| defaultChecked | 初始是否选中     | `boolean`                                          | `false` |
-| disabled       | 失效状态         | `boolean`                                          | `false` |
-| onChange       | 变化时回调函数   | `(e: React.ChangeEvent<HTMLInputElement>) => void` | `--`    |
+| 属性名         | 描述                              | 类型                            | 默认值  |
+| -------------- | --------------------------------- | ------------------------------- | ------- |
+| autoFocus      | 自动获取焦点                      | `boolean`                       | `false` |
+| checked        | 指定当前是否选中                  | `boolean`                       | `false` |
+| defaultChecked | 初始是否选中                      | `boolean`                       | `false` |
+| disabled       | 失效状态                          | `boolean`                       | `false` |
+| onChange       | 变化时回调函数                    | `(e: RadioChangeEvent) => void` | `--`    |
+| value          | 根据 value 进行比较，判断是否选中 | `any`                           | `--`    |
+
+### Radio.Group
+
+| 属性名       | 描述                                             | 类型                                                                    | 默认值    |
+| ------------ | ------------------------------------------------ | ----------------------------------------------------------------------- | --------- |
+| buttonStyle  | RadioButton 的风格样式，目前有描边和填色两种风格 | `outline \| solid `                                                     | `outline` |
+| defaultValue | 默认选中的值                                     | `any`                                                                   | `--`      |
+| disabled     | 禁选所有子单选器                                 | `boolean`                                                               | `false`   |
+| options      | 子元素配置                                       | `string[] \| Array<{ label: string value: string disabled?: boolean }>` | `--`      |
+| optionType   | 用于设置 Radio `options` 类型                    | `default \| button`                                                     | `default` |
+| value        | 用于设置当前选中的值                             | `any`                                                                   | `--`      |
+| onChange     | 选项变化时的回调函数                             | `(e: RadioChangeEvent) => void`                                         | `--`      |

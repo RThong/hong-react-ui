@@ -3,6 +3,15 @@ import InternalRadio from './Radio';
 import Group from './Group';
 import { RadioProps } from './interface';
 
+export {
+  RadioGroupButtonStyle,
+  RadioGroupOptionType,
+  RadioGroupProps,
+  RadioProps,
+  RadioChangeEventTarget,
+  RadioChangeEvent,
+} from './interface';
+
 interface CompoundedComponent
   extends React.ForwardRefExoticComponent<
     RadioProps & React.RefAttributes<HTMLInputElement>

@@ -19,7 +19,10 @@ const InternalRadio: React.ForwardRefRenderFunction<
     disabled = false,
     autoFocus = false,
     onChange,
+    prefixCls = sc(),
     children,
+    style,
+    className,
   } = props;
 
   const [checked, setChecked] = useState(
@@ -64,25 +67,31 @@ const InternalRadio: React.ForwardRefRenderFunction<
 
   return (
     <label
-      className={classnames(sc('wrapper'), {
-        [sc('wrapper-disabled')]: disabled,
-      })}
+      style={style}
+      className={classnames(
+        `${prefixCls}-wrapper`,
+        {
+          [`${prefixCls}-wrapper-disabled`]: disabled,
+          [`${prefixCls}-wrapper-checked`]: checked,
+        },
+        className,
+      )}
     >
       <span
-        className={classnames(sc(), {
-          [sc('checked')]: checked,
-          [sc('disabled')]: disabled,
+        className={classnames(`${prefixCls}`, {
+          [`${prefixCls}-checked`]: checked,
+          [`${prefixCls}-disabled`]: disabled,
         })}
       >
         <input
           ref={inputRef}
           type="radio"
-          className={classnames(sc('input'))}
+          className={classnames(`${prefixCls}-input`)}
           value={value}
           checked={checked}
           onChange={handleChange}
         />
-        <span className={classnames(sc('inner'))} />
+        <span className={classnames(`${prefixCls}-inner`)} />
       </span>
       <span>{children}</span>
     </label>

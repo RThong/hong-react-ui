@@ -2,7 +2,7 @@
  * title: 单选组合
  * desc: 一组互斥的 Radio 配合使用。
  */
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Radio } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
 
@@ -33,6 +33,7 @@ const Demo = () => {
           {
             label: 'D',
             value: 4,
+            disabled: true,
           },
         ]}
         onChange={onChange}
