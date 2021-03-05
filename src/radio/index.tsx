@@ -1,6 +1,7 @@
 import React from 'react';
-import InternalRadio, { RadioProps } from './Radio';
+import InternalRadio from './Radio';
 import Group from './Group';
+import { RadioProps } from './interface';
 
 interface CompoundedComponent
   extends React.ForwardRefExoticComponent<
