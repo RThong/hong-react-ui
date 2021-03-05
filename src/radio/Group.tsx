@@ -1,8 +1,9 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 import './index.less';
 import Radio from './Radio';
+import { RadioChangeEvent } from './interface';
 
 interface Option {
   label: string;
@@ -14,7 +15,7 @@ export interface RadioGroupProps {
   options?: Array<string | Option>;
   defaultValue?: any;
   value?: any;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: RadioChangeEvent) => void;
 }
 // ant-radio-group ant-radio-group-outline
 
@@ -37,13 +38,18 @@ const Group: React.FC<RadioGroupProps> = (props) => {
     return option;
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // onChange?.(e);
+  useEffect(() => {
+    if ('value' in props) {
+      setValue(props.value);
+    }
+  }, [props]);
 
-    // if (!('value' in props)) {
-    console.log('【------】', typeof e.target.value);
-    setValue(e.target.value);
-    // }
+  const handleChange = (e: RadioChangeEvent) => {
+    onChange?.(e);
+
+    if (!('value' in props)) {
+      setValue(e.target.value);
+    }
   };
 
   return (
@@ -55,7 +61,7 @@ const Group: React.FC<RadioGroupProps> = (props) => {
           onChange={(e) => handleChange(e)}
           value={option.value}
         >
-          {option.label + option.value + '---' + value}
+          {option.label}
         </Radio>
       ))}
     </div>

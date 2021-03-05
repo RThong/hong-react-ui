@@ -1,6 +1,6 @@
 /**
- * title: 基本
- * desc: 最简单的用法。
+ * title: 单选组合
+ * desc: 一组互斥的 Radio 配合使用。
  */
 import React, { useRef, useState } from 'react';
 import { Radio } from 'hong-react-ui';
@@ -36,14 +36,8 @@ const Demo = () => {
           },
         ]}
         onChange={onChange}
-        // value={value}
-        defaultValue={1}
-      >
-        {/* <Radio value={1}>A</Radio>
-        <Radio value={2}>B</Radio>
-        <Radio value={3}>C</Radio>
-        <Radio value={4}>D</Radio> */}
-      </Radio.Group>
+        value={value}
+      />
     </div>
   );
 };
