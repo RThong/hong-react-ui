@@ -9,9 +9,16 @@ import './index.less';
 
 const sc = createScopedClasses('message');
 
+let key = 1;
 let Test = null;
 
+const getKeyThenIncreaseKey = () => {
+  return key++;
+};
+
 const info = (config: any) => {
+  const target = key++;
+
   if (!Test) {
     Notification.init((instance) => {
       console.log('【init】', instance);
@@ -20,7 +27,15 @@ const info = (config: any) => {
     });
   }
 
-  Test.notice();
+  Test.notice({
+    key: target,
+  });
+
+  const result = () => {
+    Test.removeNotice(target);
+  };
+
+  return result;
 };
 
 const message = {};
