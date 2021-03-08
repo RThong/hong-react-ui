@@ -1,5 +1,7 @@
 import React, {
   CSSProperties,
+  useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -10,6 +12,13 @@ import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 import './index.less';
+import {
+  ArgsProps,
+  CompoundedNotificationComponent,
+  NoticeProps,
+  NotificationProps,
+} from './interface';
+import Notice from './Notice';
 
 let seed = 0;
 
@@ -23,27 +32,12 @@ const getUuid = () => {
 
 const sc = createScopedClasses('message');
 
-const Notice = (props) => {
-  console.log('【Notice】', props);
-
-  return (
-    <div className={classnames(sc('notice'))}>
-      <div className={classnames(sc('notice-content'))}>
-        <div className={classnames(sc('custom-content'), sc('loading'))}>
-          <LoadingOutlined />
-          <span>Action in progress.. {props.aaa}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Notification = React.forwardRef((props, ref) => {
-  const [noticeList, setNoticeList] = useState([]);
+const Notification = React.forwardRef<HTMLInputElement, any>((props, ref) => {
+  const [noticeList, setNoticeList] = useState<ArgsProps[]>([]);
 
   const innerRef = useRef();
 
-  const add = (addProps) => {
+  const add = (addProps: ArgsProps) => {
     console.log('【add】', addProps);
 
     // const key = getUuid()
@@ -66,13 +60,18 @@ const Notification = React.forwardRef((props, ref) => {
   return (
     <div ref={innerRef} className={classnames(sc())}>
       <QueueAnim type="top">
-        {noticeList.map((notice, key) => (
-          <Notice key={notice.key} aaa={notice.key} />
+        {noticeList.map((notice) => (
+          <Notice
+            key={notice.key}
+            noticeKey={notice.key}
+            clearNotice={remove}
+            {...notice}
+          />
         ))}
       </QueueAnim>
     </div>
   );
-});
+}) as CompoundedNotificationComponent;
 
 Notification.init = (callback) => {
   const div = document.createElement('div');
@@ -82,7 +81,7 @@ Notification.init = (callback) => {
     console.log('【aaa】', notification);
 
     callback({
-      notice(noticeProps) {
+      notice(noticeProps: ArgsProps) {
         notification.add(noticeProps);
       },
       removeNotice(key) {

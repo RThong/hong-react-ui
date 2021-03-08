@@ -6,34 +6,48 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Notification from './Notification';
 
 import './index.less';
+import { ArgsProps, NotificationInstance } from './interface';
 
 const sc = createScopedClasses('message');
 
 let key = 1;
-let Test = null;
+let messageInstance: NotificationInstance | null = null;
 
 const getKeyThenIncreaseKey = () => {
   return key++;
 };
 
-const info = (config: any) => {
+const info = (config: ArgsProps) => {
   const target = key++;
 
-  if (!Test) {
-    Notification.init((instance) => {
-      console.log('【init】', instance);
+  const closePromise = new Promise((resolve) => {
+    const callback = () => {
+      if (typeof args.onClose === 'function') {
+        args.onClose();
+      }
+      return resolve(true);
+    };
 
-      Test = instance;
+    if (!messageInstance) {
+      Notification.init((instance) => {
+        console.log('【init】', instance);
+
+        messageInstance = instance;
+      });
+    }
+
+    messageInstance.notice({
+      ...config,
+      key: target,
+      onClose: () => resolve(true),
     });
-  }
-
-  Test.notice({
-    key: target,
   });
 
   const result = () => {
-    Test.removeNotice(target);
+    messageInstance.removeNotice(target);
   };
+
+  result.then = (filled, rejected) => closePromise.then(filled, rejected);
 
   return result;
 };
