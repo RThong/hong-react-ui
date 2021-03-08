@@ -9,7 +9,7 @@ import 'hong-react-ui/dist/index.css';
 const info = () => {
   const aaa = message.info({
     content: '这是一段文字',
-    duration: 1,
+    duration: 0,
   });
 
   aaa.then((...args) => {

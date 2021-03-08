@@ -29,6 +29,9 @@ const Notice: React.FC<NoticeProps> = (props) => {
   const onClose = useRef(props.onClose);
 
   useEffect(() => {
+    if (timerDuration === 0) {
+      return;
+    }
     const timer = setTimeout(() => {
       console.log('timer');
 

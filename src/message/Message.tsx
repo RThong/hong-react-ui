@@ -6,7 +6,13 @@ import { LoadingOutlined } from '@ant-design/icons';
 import Notification from './Notification';
 
 import './index.less';
-import { ArgsProps, NotificationInstance } from './interface';
+import {
+  ArgsProps,
+  MessageApi,
+  MessageType,
+  NotificationInstance,
+  ThenableArgument,
+} from './interface';
 
 const sc = createScopedClasses('message');
 
@@ -17,26 +23,26 @@ const getKeyThenIncreaseKey = () => {
   return key++;
 };
 
-const info = (config: ArgsProps) => {
+const info: (config: ArgsProps) => MessageType = (config) => {
   const target = key++;
 
-  const closePromise = new Promise((resolve) => {
-    const callback = () => {
-      if (typeof args.onClose === 'function') {
-        args.onClose();
-      }
-      return resolve(true);
-    };
+  const closePromise = new Promise<any>((resolve) => {
+    // const callback = () => {
+    //   if (typeof args.onClose === 'function') {
+    //     args.onClose();
+    //   }
+    //   return resolve(true);
+    // };
 
     if (!messageInstance) {
-      Notification.init((instance) => {
+      Notification.init((instance: NotificationInstance) => {
         console.log('【init】', instance);
 
         messageInstance = instance;
       });
     }
 
-    messageInstance.notice({
+    messageInstance?.notice?.({
       ...config,
       key: target,
       onClose: () => resolve(true),
@@ -44,16 +50,18 @@ const info = (config: ArgsProps) => {
   });
 
   const result = () => {
-    messageInstance.removeNotice(target);
+    messageInstance?.removeNotice?.(target);
   };
+  result.then = (filled: any, rejected: any) =>
+    closePromise.then(filled, rejected);
 
-  result.then = (filled, rejected) => closePromise.then(filled, rejected);
+  result.promise = closePromise;
 
   return result;
 };
 
-const message = {};
-
-message.info = info;
+const message: MessageApi = {
+  info,
+};
 
 export default message;

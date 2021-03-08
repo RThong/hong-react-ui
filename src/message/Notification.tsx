@@ -15,8 +15,11 @@ import './index.less';
 import {
   ArgsProps,
   CompoundedNotificationComponent,
+  NoticeItem,
   NoticeProps,
+  NotificationInstance,
   NotificationProps,
+  NotificationRef,
 } from './interface';
 import Notice from './Notice';
 
@@ -32,20 +35,18 @@ const getUuid = () => {
 
 const sc = createScopedClasses('message');
 
-const Notification = React.forwardRef<HTMLInputElement, any>((props, ref) => {
-  const [noticeList, setNoticeList] = useState<ArgsProps[]>([]);
+const Notification = React.forwardRef<NotificationRef, any>((props, ref) => {
+  const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
 
-  const innerRef = useRef();
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  const add = (addProps: ArgsProps) => {
+  const add = (addProps: NoticeItem) => {
     console.log('【add】', addProps);
-
-    // const key = getUuid()
 
     setNoticeList((a) => [...a, addProps]);
   };
 
-  const remove = (removeKey) => {
+  const remove = (removeKey: React.Key) => {
     console.log('【remove】', removeKey);
 
     setNoticeList((list) => list.filter((_) => _.key !== removeKey));
@@ -54,18 +55,18 @@ const Notification = React.forwardRef<HTMLInputElement, any>((props, ref) => {
   useImperativeHandle(ref, () => ({
     add,
     remove,
-    instance: innerRef.current,
+    instance: innerRef.current as HTMLDivElement,
   }));
 
   return (
     <div ref={innerRef} className={classnames(sc())}>
       <QueueAnim type="top">
-        {noticeList.map((notice) => (
+        {noticeList.map(({ key, ...restNoticeProps }) => (
           <Notice
-            key={notice.key}
-            noticeKey={notice.key}
+            key={key}
+            noticeKey={key}
             clearNotice={remove}
-            {...notice}
+            {...restNoticeProps}
           />
         ))}
       </QueueAnim>
@@ -73,21 +74,28 @@ const Notification = React.forwardRef<HTMLInputElement, any>((props, ref) => {
   );
 }) as CompoundedNotificationComponent;
 
-Notification.init = (callback) => {
+Notification.init = (callback: (instance: NotificationInstance) => void) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
 
-  const ref = (notification) => {
+  const ref = (notification: NotificationRef) => {
     console.log('【aaa】', notification);
 
     callback({
-      notice(noticeProps: ArgsProps) {
+      notice(noticeProps: NoticeItem) {
         notification.add(noticeProps);
       },
       removeNotice(key) {
         notification.remove(key);
       },
       component: notification,
+
+      destroy() {
+        ReactDOM.unmountComponentAtNode(div);
+        if (div.parentNode) {
+          div.parentNode.removeChild(div);
+        }
+      },
     });
   };
 
