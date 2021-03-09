@@ -1,22 +1,24 @@
 import React from 'react';
 
-export type NoticeType = 'info';
+export type NoticeType = 'info' | 'success' | 'error' | 'warning' | 'loading';
 
 export interface MessageType extends PromiseLike<any> {
   promise: Promise<unknown>;
   (): void;
 }
 
-export type MessageApi = {
+export type MessageInstance = {
   [key in NoticeType]: (config: ArgsProps) => MessageType;
 };
+
+export interface MessageApi extends MessageInstance {
+  destroy: () => void;
+}
 
 export interface ArgsProps {
   content: React.ReactNode;
   duration?: number;
   // type: NoticeType;
-  // prefixCls?: string;
-  // rootPrefixCls?: string;
   // onClose?: () => void;
   // icon?: React.ReactNode;
   key?: string | number;
@@ -28,10 +30,6 @@ export interface ArgsProps {
 export interface NoticeProps extends NoticeItem {
   clearNotice: (key: React.Key) => void;
   noticeKey: React.Key;
-}
-
-export interface NotificationProps {
-  aaa: string;
 }
 
 export interface NotificationRef {
@@ -58,5 +56,6 @@ export type ThenableArgument = (val: any) => void;
 
 export interface NoticeItem extends Omit<ArgsProps, 'key'> {
   key: number;
+  type: NoticeType;
   onClose: () => void;
 }

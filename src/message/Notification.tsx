@@ -1,11 +1,4 @@
-import React, {
-  CSSProperties,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import QueueAnim from 'rc-queue-anim';
 import classnames from 'classnames';
@@ -13,12 +6,9 @@ import { createScopedClasses } from '@/utils';
 import { LoadingOutlined } from '@ant-design/icons';
 import './index.less';
 import {
-  ArgsProps,
   CompoundedNotificationComponent,
   NoticeItem,
-  NoticeProps,
   NotificationInstance,
-  NotificationProps,
   NotificationRef,
 } from './interface';
 import Notice from './Notice';
