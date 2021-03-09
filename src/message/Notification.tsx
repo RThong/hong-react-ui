@@ -31,14 +31,10 @@ const Notification = React.forwardRef<NotificationRef, any>((props, ref) => {
   const innerRef = useRef<HTMLDivElement>(null);
 
   const add = (addProps: NoticeItem) => {
-    console.log('【add】', addProps);
-
     setNoticeList((a) => [...a, addProps]);
   };
 
   const remove = (removeKey: React.Key) => {
-    console.log('【remove】', removeKey);
-
     setNoticeList((list) => list.filter((_) => _.key !== removeKey));
   };
 
@@ -69,8 +65,6 @@ Notification.init = (callback: (instance: NotificationInstance) => void) => {
   document.body.appendChild(div);
 
   const ref = (notification: NotificationRef) => {
-    console.log('【aaa】', notification);
-
     callback({
       notice(noticeProps: NoticeItem) {
         notification.add(noticeProps);

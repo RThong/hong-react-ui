@@ -20,7 +20,6 @@ const TYPE_ICON_MAP = {
 };
 
 const Notice: React.FC<NoticeProps> = (props) => {
-  console.log('【Notice】', props);
   const {
     content,
     duration = 3,
@@ -40,8 +39,6 @@ const Notice: React.FC<NoticeProps> = (props) => {
       return;
     }
     const timer = setTimeout(() => {
-      console.log('timer');
-
       clearNotice(noticeKey);
     }, timerDuration);
 

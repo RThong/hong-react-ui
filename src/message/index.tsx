@@ -20,8 +20,6 @@ const notice: (config: ArgsProps & { type: NoticeType }) => MessageType = (
   const closePromise = new Promise<any>((resolve) => {
     if (!messageInstance) {
       Notification.init((instance: NotificationInstance) => {
-        console.log('【init】', instance);
-
         messageInstance = instance;
       });
     }
