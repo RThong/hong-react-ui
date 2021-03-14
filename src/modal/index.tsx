@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import './index.less';
 import { createScopedClasses } from '@/utils';
@@ -8,39 +8,110 @@ import { CloseOutlined } from '@ant-design/icons';
 
 const sc = createScopedClasses('modal');
 
-const ModalContent = () => {
-  return (
-    <div className={classnames(sc('root'))}>
-      <div className={classnames(sc('mask'))} />
+interface ModalProps {
+  visible?: boolean;
+  onCancel?: (e: React.SyntheticEvent<HTMLElement>) => void;
+  onOk?: (e: React.SyntheticEvent<HTMLElement>) => void;
+  keyboard?: boolean;
+  width?: string | number;
+  title?: React.ReactNode;
+}
 
-      <div className={classnames(sc('wrap'))}>
-        <div className={classnames(sc())}>
-          <div className={classnames(sc('content'))}>
-            <button type="button" className={classnames(sc('close'))}>
-              <span className={classnames(sc('close-x'))}>
-                <CloseOutlined />
-              </span>
-            </button>
+const Modal: React.FC<ModalProps> = (props) => {
+  console.log('【Modal】', props);
 
-            <div className={classnames(sc('header'))}>header</div>
+  const {
+    title,
+    visible,
+    onCancel,
+    onOk,
+    keyboard = true,
+    children,
+    width = 520,
+  } = props;
 
-            <div className={classnames(sc('body'))}>body</div>
+  const contentStyle = {
+    width,
+  };
 
-            <div className={classnames(sc('footer'))}>
-              <Button>取消</Button>
-              <Button type="primary">确定</Button>
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const closeModal = (e: React.SyntheticEvent<HTMLElement>) => {
+    onCancel?.(e);
+  };
+
+  // const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+  //   onOk?.(e);
+  // };
+
+  const handleWrapperClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === wrapperRef.current) {
+      closeModal(e);
+    }
+  };
+
+  const onWrapperKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (keyboard && e.key === 'Escape') {
+      e.stopPropagation();
+      closeModal(e);
+    }
+  };
+
+  useEffect(() => {
+    visible && wrapperRef.current?.focus();
+  }, [visible]);
+
+  const renderModal = () => {
+    return (
+      <div className={classnames(sc('root'))}>
+        {visible && <div className={classnames(sc('mask'))} />}
+
+        <div
+          tabIndex={-1}
+          ref={wrapperRef}
+          onKeyDown={onWrapperKeyDown}
+          onClick={handleWrapperClick}
+          className={classnames(sc('wrap'))}
+          style={
+            visible
+              ? undefined
+              : {
+                  display: 'none',
+                }
+          }
+        >
+          <div className={classnames(sc())} style={contentStyle}>
+            <div className={classnames(sc('content'))}>
+              <button
+                onClick={closeModal}
+                type="button"
+                className={classnames(sc('close'))}
+              >
+                <span className={classnames(sc('close-x'))}>
+                  <CloseOutlined />
+                </span>
+              </button>
+
+              <div className={classnames(sc('header'))}>
+                <div className={classnames(sc('title'))}>{title}</div>
+              </div>
+
+              <div className={classnames(sc('body'))}>{children}</div>
+
+              <div className={classnames(sc('footer'))}>
+                <Button onClick={closeModal}>取消</Button>
+                <Button onClick={closeModal} type="primary">
+                  确定
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-const Modal = () => {
-  console.log('modal');
-
-  return ReactDOM.createPortal(<ModalContent />, document.body);
+  return ReactDOM.createPortal(renderModal(), document.body);
 };
 
 export default Modal;

@@ -3,19 +3,33 @@
  * desc: 使用组件声明一个对话框，通过控制 visible 属性来显示/隐藏。
  */
 import React, { useState, useEffect } from 'react';
-import { Modal } from 'hong-react-ui';
+import { Button, Modal } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
 
 const Demo = () => {
-  const [a, setA] = useState({});
-  useEffect(() => {
-    setTimeout(() => {
-      setA({});
-    }, 2000);
-  }, []);
+  const [visible, setVisible] = useState(false);
+
   return (
     <div>
-      <Modal>ad</Modal>
+      <Button type="primary" onClick={() => setVisible(true)}>
+        Open Modal
+      </Button>
+      <Modal
+        title="Basic Modal"
+        visible={visible}
+        onOk={() => {
+          console.log('onOk');
+          setVisible(false);
+        }}
+        onCancel={() => {
+          console.log('onCancel');
+          setVisible(false);
+        }}
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </div>
   );
 };
