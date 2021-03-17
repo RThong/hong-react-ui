@@ -13,8 +13,16 @@ const Demo = () => {
       <Button onClick={() => setVisible((v) => !v)}>click</Button>
       <Transition
         visible={visible}
-        enter={{ width: 200 }}
-        leave={{ width: 20 }}
+        // beforeEnter={{
+        //   transform: `translateX(20%)`,
+        // }}
+        afterEnter={{ transform: `translateX(100%)` }}
+        beforeLeave={{ transform: `translateX(150%)` }}
+        // afterLeave={{ transform: `translateX(20%)` }}
+        // afterClose={() => console.log('afterClose')}
+        transitionActive={{
+          transition: 'all .5s linear',
+        }}
       >
         {({ className: motionClassName, style: motionStyle }, motionRef) => (
           <div
@@ -22,7 +30,7 @@ const Demo = () => {
             style={{
               background: 'green',
               height: 30,
-              width: 20,
+              width: 100,
               ...motionStyle,
             }}
             ref={motionRef}

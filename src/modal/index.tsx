@@ -5,6 +5,7 @@ import { createScopedClasses } from '@/utils';
 import ReactDOM from 'react-dom';
 import { Button } from '..';
 import { CloseOutlined } from '@ant-design/icons';
+import Content from './Content';
 
 const sc = createScopedClasses('modal');
 
@@ -80,32 +81,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 }
           }
         >
-          <div className={classnames(sc())} style={contentStyle}>
-            <div className={classnames(sc('content'))}>
-              <button
-                onClick={closeModal}
-                type="button"
-                className={classnames(sc('close'))}
-              >
-                <span className={classnames(sc('close-x'))}>
-                  <CloseOutlined />
-                </span>
-              </button>
-
-              <div className={classnames(sc('header'))}>
-                <div className={classnames(sc('title'))}>{title}</div>
-              </div>
-
-              <div className={classnames(sc('body'))}>{children}</div>
-
-              <div className={classnames(sc('footer'))}>
-                <Button onClick={closeModal}>取消</Button>
-                <Button onClick={closeModal} type="primary">
-                  确定
-                </Button>
-              </div>
-            </div>
-          </div>
+          <Content />
         </div>
       </div>
     );

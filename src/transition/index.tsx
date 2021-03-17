@@ -3,9 +3,13 @@ import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 
 interface TransitionProps {
-  enter: React.CSSProperties;
+  beforeEnter: React.CSSProperties;
+  afterEnter: React.CSSProperties;
+  beforeLeave: React.CSSProperties;
+  afterLeave: React.CSSProperties;
   leave: React.CSSProperties;
   visible: boolean;
+  transitionActive?: React.CSSProperties;
   children?: (
     props: {
       visible?: boolean;
@@ -15,34 +19,106 @@ interface TransitionProps {
     },
     ref: (node: any) => void,
   ) => React.ReactElement;
+  afterClose?: () => void;
 }
 
 const sc = createScopedClasses('transition');
 
+enum Status {
+  beforeEnter = 'beforeEnter',
+  activeEnter = 'activeEnter',
+  afterEnter = 'afterEnter',
+  beforeLeave = 'beforeLeave',
+  activeLeave = 'activeLeave',
+  afterLeave = 'afterLeave',
+}
+
 const Transition = (props: TransitionProps) => {
-  const { children, enter, leave, visible } = props;
+  const {
+    children,
+    beforeEnter,
+    afterEnter,
+    beforeLeave,
+    afterLeave,
+    transitionActive = {
+      transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+    },
+    leave,
+    visible,
+    afterClose,
+  } = props;
 
   const [animationVisible, setAnimationVisible] = useState(visible);
 
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>({});
+
+  const ref = useRef<HTMLDivElement>(null);
+  const statusRef = useRef<Status>();
 
   useEffect(() => {
     visible && setAnimationVisible(visible);
   }, [visible]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setContentStyle(visible ? enter : leave);
-    }, 16);
-  }, [visible, enter, leave]);
+    if (visible) {
+      setContentStyle({
+        transition: '',
+        ...(beforeEnter || {}),
+      });
+      // 标记进入动画前
+      statusRef.current = Status.beforeEnter;
+    }
+  }, [visible, beforeEnter]);
 
-  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (statusRef.current === Status.beforeEnter) {
+      setTimeout(() => {
+        setContentStyle({
+          ...transitionActive,
+          ...(afterEnter || {}),
+        });
+        statusRef.current = Status.activeEnter;
+      }, 16);
+    }
+  }, [afterEnter, transitionActive]);
+
+  useEffect(() => {
+    if (statusRef.current === Status.afterEnter) {
+      console.log('beforeLeave');
+      // setTimeout(() => {
+      setContentStyle({
+        transition: '',
+        ...(beforeLeave || {}),
+      });
+      statusRef.current = Status.beforeLeave;
+      // }, 16);
+    }
+  }, [beforeLeave]);
+
+  useEffect(() => {
+    console.log('afterLeave', statusRef.current);
+    if (
+      statusRef.current === Status.beforeLeave ||
+      (statusRef.current === Status.afterEnter && !beforeLeave)
+    ) {
+      setTimeout(() => {
+        setContentStyle({
+          ...transitionActive,
+          ...(afterLeave || {}),
+        });
+        statusRef.current = Status.activeLeave;
+      }, 16);
+    }
+  }, [afterLeave, beforeLeave, transitionActive]);
 
   useEffect(() => {
     const fn = () => {
-      // setAnimationVisible(false);
-      console.log('【visible】', visible);
-      if (!visible) {
+      if (statusRef.current === Status.activeEnter) {
+        statusRef.current = Status.afterEnter;
+      }
+
+      if (statusRef.current === Status.activeLeave) {
+        statusRef.current = Status.afterLeave;
         setAnimationVisible(false);
       }
     };
@@ -56,7 +132,7 @@ const Transition = (props: TransitionProps) => {
 
   return children(
     {
-      className: classnames(sc()),
+      // className: classnames(sc()),
       style: {
         ...contentStyle,
         display: animationVisible ? undefined : 'none',
