@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import classnames from 'classnames';
-import { createScopedClasses } from '@/utils';
 
-interface TransitionProps {
-  beforeEnter: React.CSSProperties;
+export interface TransitionProps {
+  beforeEnter?: React.CSSProperties;
   afterEnter: React.CSSProperties;
-  beforeLeave: React.CSSProperties;
-  afterLeave: React.CSSProperties;
-  leave: React.CSSProperties;
+  beforeLeave?: React.CSSProperties;
+  afterLeave?: React.CSSProperties;
   visible: boolean;
   transitionActive?: React.CSSProperties;
   children?: (
@@ -17,12 +14,10 @@ interface TransitionProps {
       style?: React.CSSProperties;
       [key: string]: any;
     },
-    ref: (node: any) => void,
+    ref: any,
   ) => React.ReactElement;
   afterClose?: () => void;
 }
-
-const sc = createScopedClasses('transition');
 
 enum Status {
   beforeEnter = 'beforeEnter',
@@ -41,24 +36,28 @@ const Transition = (props: TransitionProps) => {
     beforeLeave,
     afterLeave,
     transitionActive = {
-      transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+      transition: 'all .3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
     },
-    leave,
     visible,
     afterClose,
   } = props;
 
+  // 控制动画结束后元素的隐藏
   const [animationVisible, setAnimationVisible] = useState(visible);
 
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>({});
 
-  const ref = useRef<HTMLDivElement>(null);
+  // 大概率是HTMLElement
+  const ref = useRef<any>(null);
   const statusRef = useRef<Status>();
+
+  const afterCloseRef = useRef<(() => void) | undefined>(afterClose);
 
   useEffect(() => {
     visible && setAnimationVisible(visible);
   }, [visible]);
 
+  // 当开始动画前  直接给元素设置beforeEnter的样式
   useEffect(() => {
     if (visible) {
       setContentStyle({
@@ -70,6 +69,7 @@ const Transition = (props: TransitionProps) => {
     }
   }, [visible, beforeEnter]);
 
+  // 当前是进入动画前状态  设置afterEnter样式让动画开始   并标记activeEnter状态
   useEffect(() => {
     if (statusRef.current === Status.beforeEnter) {
       setTimeout(() => {
@@ -82,21 +82,22 @@ const Transition = (props: TransitionProps) => {
     }
   }, [afterEnter, transitionActive]);
 
+  // 进场动画结束  设置退场动画初始样式  标记beforeLeave
   useEffect(() => {
     if (statusRef.current === Status.afterEnter) {
       console.log('beforeLeave');
-      // setTimeout(() => {
       setContentStyle({
         transition: '',
         ...(beforeLeave || {}),
       });
       statusRef.current = Status.beforeLeave;
-      // }, 16);
     }
   }, [beforeLeave]);
 
+  // 如果没有传入beforeLeave 也就不会到对应的状态
+  // 所以在当前是beforeLeave状态时开始执行退场动画
+  // 在当前是afterEnter并且没传入beforeLeave时也去执行退场动画
   useEffect(() => {
-    console.log('afterLeave', statusRef.current);
     if (
       statusRef.current === Status.beforeLeave ||
       (statusRef.current === Status.afterEnter && !beforeLeave)
@@ -112,34 +113,39 @@ const Transition = (props: TransitionProps) => {
   }, [afterLeave, beforeLeave, transitionActive]);
 
   useEffect(() => {
-    const fn = () => {
+    const transitionCb = () => {
+      // 进场动画结束
       if (statusRef.current === Status.activeEnter) {
         statusRef.current = Status.afterEnter;
       }
 
+      // 退场动画结束
       if (statusRef.current === Status.activeLeave) {
         statusRef.current = Status.afterLeave;
+        setContentStyle({});
         setAnimationVisible(false);
+        afterCloseRef.current?.();
       }
     };
-    const aaa = ref.current;
+    const target = ref.current;
 
-    aaa?.addEventListener('transitionend', fn);
+    target?.addEventListener('transitionend', transitionCb);
     return () => {
-      aaa?.removeEventListener('transitionend', fn);
+      target?.removeEventListener('transitionend', transitionCb);
     };
-  }, [visible]);
+  }, []);
 
-  return children(
-    {
-      // className: classnames(sc()),
-      style: {
-        ...contentStyle,
-        display: animationVisible ? undefined : 'none',
-      },
-    },
-    ref,
-  );
+  return children
+    ? children(
+        {
+          style: {
+            ...contentStyle,
+            display: animationVisible ? undefined : 'none',
+          },
+        },
+        ref,
+      )
+    : null;
 };
 
 export default Transition;
