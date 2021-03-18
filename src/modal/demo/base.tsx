@@ -22,7 +22,7 @@ const Demo = () => {
           setVisible(false);
         }}
         onCancel={() => {
-          console.log('onCancel');
+          console.log('【onCancel】');
           setVisible(false);
         }}
       >

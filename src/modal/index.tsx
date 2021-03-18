@@ -70,6 +70,7 @@ const Modal: React.FC<ModalProps> = (props) => {
   }, [visible]);
 
   const handleAfterClose = () => {
+    console.log('【handleAfterClose】');
     setAnimationVisible(false);
     afterClose?.();
   };
