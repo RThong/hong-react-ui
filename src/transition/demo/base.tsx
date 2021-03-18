@@ -22,7 +22,24 @@ const Demo = () => {
 
       <Transition
         visible={visible}
-        afterEnter={{ transform: `translateX(300%)` }}
+        // beforeEnter={{ transform: `translateX(50%)` }}
+        // afterEnter={{ transform: `translateX(300%)` }}
+        // beforeLeave={{ transform: `translateX(400%)` }}
+        // afterLeave={{ transform: `translateX(100%)` }}
+
+        beforeEnter={{
+          opacity: 0,
+          transform: 'scale(0, 0)',
+        }}
+        afterEnter={{
+          opacity: 1,
+          transform: 'scale(1, 1)',
+        }}
+        afterLeave={{
+          opacity: 0,
+          transform: 'scale(0, 0)',
+        }}
+        removeOnLeave={false}
       >
         {({ style: motionStyle }, motionRef) => (
           <div className="transition-box" style={motionStyle} ref={motionRef} />

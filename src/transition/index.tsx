@@ -7,6 +7,7 @@ export interface TransitionProps {
   afterLeave?: React.CSSProperties;
   visible: boolean;
   transitionActive?: React.CSSProperties;
+  removeOnLeave?: boolean;
   children?: (
     props: {
       visible?: boolean;
@@ -37,6 +38,7 @@ const Transition = (props: TransitionProps) => {
     afterLeave,
     transitionActive,
     visible,
+    removeOnLeave = true,
     afterClose,
   } = props;
 
@@ -61,27 +63,23 @@ const Transition = (props: TransitionProps) => {
 
   useEffect(() => {
     if (visible) {
-      setAnimationVisible(visible);
-    }
-  }, [visible]);
-
-  useEffect(() => {
-    if (animationVisible && visible) {
       console.log('【beforeEnter】');
 
       setContentStyle({
         transition: '',
         ...(beforeEnterRef.current || {}),
       });
+      setAnimationVisible(visible);
       setStatus(Status.beforeEnter);
     }
-  }, [animationVisible, visible]);
+  }, [visible]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (status === Status.beforeEnter && visible) {
       console.log('【activeEnter】');
 
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
           ...(afterEnterRef.current || {}),
@@ -89,10 +87,14 @@ const Transition = (props: TransitionProps) => {
         setStatus(Status.activeEnter);
       }, 16);
     }
+
+    return () => {
+      timer && clearTimeout(timer);
+    };
   }, [status, visible]);
 
   useEffect(() => {
-    if (status === Status.afterEnter && !visible) {
+    if (status === Status.afterEnter && beforeLeaveRef.current && !visible) {
       console.log('【beforeLeave】');
 
       setContentStyle({
@@ -104,13 +106,14 @@ const Transition = (props: TransitionProps) => {
   }, [status, visible]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (
-      (status === Status.beforeLeave && !visible) ||
+      (status === Status.beforeLeave && beforeLeaveRef.current && !visible) ||
       (status === Status.afterEnter && !beforeLeaveRef.current && !visible)
     ) {
       console.log('【activeLeave】');
 
-      setTimeout(() => {
+      timer = setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
           ...(afterLeaveRef.current || {}),
@@ -118,6 +121,10 @@ const Transition = (props: TransitionProps) => {
         setStatus(Status.activeLeave);
       }, 16);
     }
+
+    return () => {
+      timer && clearTimeout(timer);
+    };
   }, [status, visible]);
 
   useEffect(() => {
@@ -146,7 +153,7 @@ const Transition = (props: TransitionProps) => {
     };
   }, [status]);
 
-  return children
+  return children && ((removeOnLeave && animationVisible) || !removeOnLeave)
     ? children(
         {
           style: {
@@ -161,7 +168,7 @@ const Transition = (props: TransitionProps) => {
 
 Transition.defaultProps = {
   transitionActive: {
-    transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+    transition: 'all .3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
   },
 };
 
