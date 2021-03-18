@@ -35,9 +35,7 @@ const Transition = (props: TransitionProps) => {
     afterEnter,
     beforeLeave,
     afterLeave,
-    transitionActive = {
-      transition: 'all .3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
-    },
+    transitionActive,
     visible,
     afterClose,
   } = props;
@@ -47,81 +45,94 @@ const Transition = (props: TransitionProps) => {
 
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>({});
 
+  const [status, setStatus] = useState<Status>();
+
   // 大概率是HTMLElement
   const ref = useRef<any>(null);
-  const statusRef = useRef<Status>();
 
   const afterCloseRef = useRef<(() => void) | undefined>(afterClose);
 
-  useEffect(() => {
-    visible && setAnimationVisible(visible);
-  }, [visible]);
+  const transitionStyleRef = useRef(transitionActive);
 
-  // 当开始动画前  直接给元素设置beforeEnter的样式
+  const beforeEnterRef = useRef(beforeEnter);
+  const afterEnterRef = useRef(afterEnter);
+  const beforeLeaveRef = useRef(beforeLeave);
+  const afterLeaveRef = useRef(afterLeave);
+
   useEffect(() => {
     if (visible) {
+      setAnimationVisible(visible);
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    if (animationVisible && visible) {
+      console.log('【beforeEnter】');
+
       setContentStyle({
         transition: '',
-        ...(beforeEnter || {}),
+        ...(beforeEnterRef.current || {}),
       });
-      // 标记进入动画前
-      statusRef.current = Status.beforeEnter;
+      setStatus(Status.beforeEnter);
     }
-  }, [visible, beforeEnter]);
+  }, [animationVisible, visible]);
 
-  // 当前是进入动画前状态  设置afterEnter样式让动画开始   并标记activeEnter状态
   useEffect(() => {
-    if (statusRef.current === Status.beforeEnter) {
+    if (status === Status.beforeEnter && visible) {
+      console.log('【activeEnter】');
+
       setTimeout(() => {
         setContentStyle({
-          ...transitionActive,
-          ...(afterEnter || {}),
+          ...transitionStyleRef.current,
+          ...(afterEnterRef.current || {}),
         });
-        statusRef.current = Status.activeEnter;
+        setStatus(Status.activeEnter);
       }, 16);
     }
-  }, [afterEnter, transitionActive]);
+  }, [status, visible]);
 
-  // 进场动画结束  设置退场动画初始样式  标记beforeLeave
   useEffect(() => {
-    if (statusRef.current === Status.afterEnter) {
-      console.log('beforeLeave');
+    if (status === Status.afterEnter && !visible) {
+      console.log('【beforeLeave】');
+
       setContentStyle({
         transition: '',
-        ...(beforeLeave || {}),
+        ...(beforeLeaveRef.current || {}),
       });
-      statusRef.current = Status.beforeLeave;
+      setStatus(Status.beforeLeave);
     }
-  }, [beforeLeave]);
+  }, [status, visible]);
 
-  // 如果没有传入beforeLeave 也就不会到对应的状态
-  // 所以在当前是beforeLeave状态时开始执行退场动画
-  // 在当前是afterEnter并且没传入beforeLeave时也去执行退场动画
   useEffect(() => {
     if (
-      statusRef.current === Status.beforeLeave ||
-      (statusRef.current === Status.afterEnter && !beforeLeave)
+      (status === Status.beforeLeave && !visible) ||
+      (status === Status.afterEnter && !beforeLeaveRef.current && !visible)
     ) {
+      console.log('【activeLeave】');
+
       setTimeout(() => {
         setContentStyle({
-          ...transitionActive,
-          ...(afterLeave || {}),
+          ...transitionStyleRef.current,
+          ...(afterLeaveRef.current || {}),
         });
-        statusRef.current = Status.activeLeave;
+        setStatus(Status.activeLeave);
       }, 16);
     }
-  }, [afterLeave, beforeLeave, transitionActive]);
+  }, [status, visible]);
 
   useEffect(() => {
     const transitionCb = () => {
       // 进场动画结束
-      if (statusRef.current === Status.activeEnter) {
-        statusRef.current = Status.afterEnter;
+      if (status === Status.activeEnter) {
+        console.log('【afterEnter】');
+        setStatus(Status.afterEnter);
       }
 
       // 退场动画结束
-      if (statusRef.current === Status.activeLeave) {
-        statusRef.current = Status.afterLeave;
+      if (status === Status.activeLeave) {
+        console.log('【afterLeave】');
+
+        setStatus(Status.afterLeave);
         setContentStyle({});
         setAnimationVisible(false);
         afterCloseRef.current?.();
@@ -133,7 +144,7 @@ const Transition = (props: TransitionProps) => {
     return () => {
       target?.removeEventListener('transitionend', transitionCb);
     };
-  }, []);
+  }, [status]);
 
   return children
     ? children(
@@ -146,6 +157,12 @@ const Transition = (props: TransitionProps) => {
         ref,
       )
     : null;
+};
+
+Transition.defaultProps = {
+  transitionActive: {
+    transition: 'all 1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+  },
 };
 
 export default Transition;

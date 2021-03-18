@@ -6,13 +6,15 @@ import ReactDOM from 'react-dom';
 import { Button } from '..';
 import { CloseOutlined } from '@ant-design/icons';
 import Content from './Content';
+import Mask from './Mask';
 
 const sc = createScopedClasses('modal');
 
 interface ModalProps {
-  visible?: boolean;
+  visible: boolean;
   onCancel?: (e: React.SyntheticEvent<HTMLElement>) => void;
   onOk?: (e: React.SyntheticEvent<HTMLElement>) => void;
+  afterClose?: () => void;
   keyboard?: boolean;
   width?: string | number;
   title?: React.ReactNode;
@@ -22,22 +24,23 @@ const Modal: React.FC<ModalProps> = (props) => {
   console.log('【Modal】', props);
 
   const {
-    title,
+    // title,
     visible,
     onCancel,
-    onOk,
+    // onOk,
     keyboard = true,
-    children,
+    // children,
+    afterClose,
     width = 520,
+    ...rest
   } = props;
 
-  const contentStyle = {
-    width,
-  };
+  const [animationVisible, setAnimationVisible] = useState(false);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const closeModal = (e: React.SyntheticEvent<HTMLElement>) => {
+    console.log('【closeModal】', e);
     onCancel?.(e);
   };
 
@@ -59,13 +62,22 @@ const Modal: React.FC<ModalProps> = (props) => {
   };
 
   useEffect(() => {
+    visible && setAnimationVisible(true);
+  }, [visible]);
+
+  useEffect(() => {
     visible && wrapperRef.current?.focus();
   }, [visible]);
+
+  const handleAfterClose = () => {
+    setAnimationVisible(false);
+    afterClose?.();
+  };
 
   const renderModal = () => {
     return (
       <div className={classnames(sc('root'))}>
-        {visible && <div className={classnames(sc('mask'))} />}
+        <Mask visible={visible} />
 
         <div
           tabIndex={-1}
@@ -74,14 +86,20 @@ const Modal: React.FC<ModalProps> = (props) => {
           onClick={handleWrapperClick}
           className={classnames(sc('wrap'))}
           style={
-            visible
+            animationVisible
               ? undefined
               : {
                   display: 'none',
                 }
           }
         >
-          <Content />
+          <Content
+            width={width}
+            visible={visible}
+            afterClose={handleAfterClose}
+            closeModal={closeModal}
+            {...rest}
+          />
         </div>
       </div>
     );
@@ -91,3 +109,6 @@ const Modal: React.FC<ModalProps> = (props) => {
 };
 
 export default Modal;
+function dd(arg0: string, e: React.SyntheticEvent<HTMLElement, Event>) {
+  throw new Error('Function not implemented.');
+}
