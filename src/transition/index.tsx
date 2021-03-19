@@ -18,6 +18,8 @@ export interface TransitionProps {
     ref: any,
   ) => React.ReactElement;
   afterClose?: () => void;
+
+  onBeforeEnter?: () => void;
 }
 
 enum Status {
@@ -40,6 +42,7 @@ const Transition = (props: TransitionProps) => {
     visible,
     removeOnLeave = true,
     afterClose,
+    onBeforeEnter,
   } = props;
 
   // 控制动画结束后元素的隐藏
@@ -72,8 +75,9 @@ const Transition = (props: TransitionProps) => {
       });
       setAnimationVisible(visible);
       setStatus(Status.beforeEnter);
+      onBeforeEnter?.();
     }
-  }, [visible]);
+  }, [visible, onBeforeEnter]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
