@@ -45,8 +45,10 @@ const Transition = (props: TransitionProps) => {
   // 控制动画结束后元素的隐藏
   const [animationVisible, setAnimationVisible] = useState(visible);
 
+  // 具体动画进行通过设置元素style
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>({});
 
+  // 根据不同阶段的状态  去驱动动画的进行
   const [status, setStatus] = useState<Status>();
 
   // 大概率是HTMLElement
@@ -54,6 +56,7 @@ const Transition = (props: TransitionProps) => {
 
   const afterCloseRef = useRef<(() => void) | undefined>(afterClose);
 
+  // 外部各时刻样式都为数组，避免直接依赖
   const transitionStyleRef = useRef(transitionActive);
 
   const beforeEnterRef = useRef(beforeEnter);
@@ -63,8 +66,6 @@ const Transition = (props: TransitionProps) => {
 
   useEffect(() => {
     if (visible) {
-      console.log('【beforeEnter】');
-
       setContentStyle({
         transition: '',
         ...(beforeEnterRef.current || {}),
@@ -77,8 +78,6 @@ const Transition = (props: TransitionProps) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (status === Status.beforeEnter && visible) {
-      console.log('【activeEnter】');
-
       timer = setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
@@ -95,8 +94,6 @@ const Transition = (props: TransitionProps) => {
 
   useEffect(() => {
     if (status === Status.afterEnter && beforeLeaveRef.current && !visible) {
-      console.log('【beforeLeave】');
-
       setContentStyle({
         transition: '',
         ...(beforeLeaveRef.current || {}),
@@ -111,8 +108,6 @@ const Transition = (props: TransitionProps) => {
       (status === Status.beforeLeave && beforeLeaveRef.current && !visible) ||
       (status === Status.afterEnter && !beforeLeaveRef.current && !visible)
     ) {
-      console.log('【activeLeave】');
-
       timer = setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
@@ -131,14 +126,11 @@ const Transition = (props: TransitionProps) => {
     const transitionCb = () => {
       // 进场动画结束
       if (status === Status.activeEnter) {
-        console.log('【afterEnter】');
         setStatus(Status.afterEnter);
       }
 
       // 退场动画结束
       if (status === Status.activeLeave) {
-        console.log('【afterLeave】');
-
         setStatus(Status.afterLeave);
         setContentStyle({});
         setAnimationVisible(false);
