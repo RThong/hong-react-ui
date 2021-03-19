@@ -67,6 +67,8 @@ const Transition = (props: TransitionProps) => {
   const beforeLeaveRef = useRef(beforeLeave);
   const afterLeaveRef = useRef(afterLeave);
 
+  const onBeforeEnterRef = useRef(onBeforeEnter);
+
   useEffect(() => {
     if (visible) {
       setContentStyle({
@@ -75,13 +77,15 @@ const Transition = (props: TransitionProps) => {
       });
       setAnimationVisible(visible);
       setStatus(Status.beforeEnter);
-      onBeforeEnter?.();
     }
-  }, [visible, onBeforeEnter]);
+  }, [visible]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (status === Status.beforeEnter && visible) {
+      // 在元素创建后调用
+      onBeforeEnterRef.current?.();
+
       timer = setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
