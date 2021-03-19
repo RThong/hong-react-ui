@@ -26,3 +26,7 @@ group:
 ### 自定义页脚
 
 <code src="./demo/customFooter"></code>
+
+### 确认对话框
+
+<code src="./demo/confirm"></code>
