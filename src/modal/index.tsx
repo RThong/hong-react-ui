@@ -18,6 +18,7 @@ interface ModalProps {
   title?: React.ReactNode;
   confirmLoading?: boolean;
   destroyOnClose?: boolean;
+  footer?: React.ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -32,6 +33,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     width = 520,
     confirmLoading,
     destroyOnClose = false,
+    footer,
     ...rest
   } = props;
   console.log('【Modal】');
@@ -106,6 +108,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             title={title}
             confirmLoading={confirmLoading}
             destroyOnClose={destroyOnClose}
+            footer={footer}
           >
             {children}
           </Content>

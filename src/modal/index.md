@@ -15,8 +15,14 @@ group:
 
 ## 代码示例
 
+### 基础使用
+
 <code src="./demo/base"></code>
 
-## 异步关闭
+### 异步关闭
 
 <code src="./demo/asyncClose"></code>
+
+### 自定义页脚
+
+<code src="./demo/customFooter"></code>
