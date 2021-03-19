@@ -88,7 +88,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       <span
         className={sc('loading-icon')}
         style={{
-          width: loading ? '100%' : '0',
+          width: loading ? '' : '0',
           transform: loading ? 'scale(1)' : 'scale(0)',
           opacity: loading ? 1 : 0,
         }}
