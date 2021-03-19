@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import './index.less';
 import { createScopedClasses } from '@/utils';
 import ReactDOM from 'react-dom';
-import { Button } from '..';
-import { CloseOutlined } from '@ant-design/icons';
 import Content from './Content';
 import Mask from './Mask';
 
@@ -21,15 +19,13 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
-  console.log('【Modal】', props);
-
   const {
-    // title,
+    title,
     visible,
     onCancel,
-    // onOk,
+    onOk,
     keyboard = true,
-    // children,
+    children,
     afterClose,
     width = 520,
     ...rest
@@ -39,25 +35,26 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const closeModal = (e: React.SyntheticEvent<HTMLElement>) => {
-    console.log('【closeModal】', e);
+  const handleOk = (e: React.MouseEvent<HTMLElement>) => {
+    onOk?.(e);
+  };
+
+  const handleCancel = (e: React.SyntheticEvent<HTMLElement>) => {
     onCancel?.(e);
   };
 
-  // const handleOk = (e: React.MouseEvent<HTMLElement>) => {
-  //   onOk?.(e);
-  // };
-
   const handleWrapperClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === wrapperRef.current) {
-      closeModal(e);
+      handleCancel(e);
     }
   };
 
   const onWrapperKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (keyboard && e.key === 'Escape') {
+      console.log('【onWrapperKeyDown】');
+
       e.stopPropagation();
-      closeModal(e);
+      handleCancel(e);
     }
   };
 
@@ -65,9 +62,9 @@ const Modal: React.FC<ModalProps> = (props) => {
     visible && setAnimationVisible(true);
   }, [visible]);
 
-  useEffect(() => {
-    visible && wrapperRef.current?.focus();
-  }, [visible]);
+  const handleFocus = () => {
+    wrapperRef.current?.focus();
+  };
 
   const handleAfterClose = () => {
     console.log('【handleAfterClose】');
@@ -98,9 +95,13 @@ const Modal: React.FC<ModalProps> = (props) => {
             width={width}
             visible={visible}
             afterClose={handleAfterClose}
-            closeModal={closeModal}
-            {...rest}
-          />
+            onOk={handleOk}
+            onCancel={handleCancel}
+            onBeforeEnter={handleFocus}
+            title={title}
+          >
+            {children}
+          </Content>
         </div>
       </div>
     );
@@ -110,6 +111,3 @@ const Modal: React.FC<ModalProps> = (props) => {
 };
 
 export default Modal;
-function dd(arg0: string, e: React.SyntheticEvent<HTMLElement, Event>) {
-  throw new Error('Function not implemented.');
-}

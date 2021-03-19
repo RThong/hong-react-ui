@@ -11,11 +11,23 @@ interface ContentProps {
   visible: boolean;
   afterClose: () => void;
   title: React.ReactNode;
-  closeModal: (e: React.SyntheticEvent<HTMLElement>) => void;
+  onOk?: (e: React.MouseEvent<HTMLElement>) => void;
+  onCancel?: (e: React.MouseEvent<HTMLElement>) => void;
+
+  onBeforeEnter?: () => void;
 }
 
 const Content: React.FC<ContentProps> = (props) => {
-  const { visible, afterClose, title, children, closeModal, width } = props;
+  const {
+    visible,
+    afterClose,
+    title,
+    children,
+    width,
+    onOk,
+    onCancel,
+    onBeforeEnter,
+  } = props;
 
   const contentStyle = {
     width,
@@ -37,6 +49,7 @@ const Content: React.FC<ContentProps> = (props) => {
         opacity: 0,
         transform: 'scale(0, 0)',
       }}
+      onBeforeEnter={onBeforeEnter}
     >
       {({ style: motionStyle }, motionRef) => (
         <div
@@ -46,7 +59,7 @@ const Content: React.FC<ContentProps> = (props) => {
         >
           <div className={classnames(sc('content'))}>
             <button
-              onClick={closeModal}
+              onClick={onCancel}
               type="button"
               className={classnames(sc('close'))}
             >
@@ -62,8 +75,8 @@ const Content: React.FC<ContentProps> = (props) => {
             <div className={classnames(sc('body'))}>{children}</div>
 
             <div className={classnames(sc('footer'))}>
-              <Button onClick={closeModal}>取消</Button>
-              <Button onClick={closeModal} type="primary">
+              <Button onClick={onCancel}>取消</Button>
+              <Button onClick={onOk} type="primary">
                 确定
               </Button>
             </div>

@@ -1,5 +1,5 @@
 ---
-title: Modal对话框
+title: Modal 对话框
 group:
   title: 信息反馈
   path: /feedback
