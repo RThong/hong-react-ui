@@ -1,7 +1,7 @@
 import { createScopedClasses } from '@/utils';
 import { CloseOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Transition } from '..';
 
 const sc = createScopedClasses('modal');
@@ -13,8 +13,9 @@ interface ContentProps {
   title: React.ReactNode;
   onOk?: (e: React.MouseEvent<HTMLElement>) => void;
   onCancel?: (e: React.MouseEvent<HTMLElement>) => void;
-
+  confirmLoading?: boolean;
   onBeforeEnter?: () => void;
+  destroyOnClose?: boolean;
 }
 
 const Content: React.FC<ContentProps> = (props) => {
@@ -27,6 +28,8 @@ const Content: React.FC<ContentProps> = (props) => {
     onOk,
     onCancel,
     onBeforeEnter,
+    confirmLoading,
+    destroyOnClose,
   } = props;
 
   const contentStyle = {
@@ -50,6 +53,7 @@ const Content: React.FC<ContentProps> = (props) => {
         transform: 'scale(0, 0)',
       }}
       onBeforeEnter={onBeforeEnter}
+      removeOnLeave={destroyOnClose}
     >
       {({ style: motionStyle }, motionRef) => (
         <div
@@ -76,7 +80,7 @@ const Content: React.FC<ContentProps> = (props) => {
 
             <div className={classnames(sc('footer'))}>
               <Button onClick={onCancel}>取消</Button>
-              <Button onClick={onOk} type="primary">
+              <Button onClick={onOk} type="primary" loading={confirmLoading}>
                 确定
               </Button>
             </div>

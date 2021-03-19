@@ -16,6 +16,8 @@ interface ModalProps {
   keyboard?: boolean;
   width?: string | number;
   title?: React.ReactNode;
+  confirmLoading?: boolean;
+  destroyOnClose?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -28,8 +30,11 @@ const Modal: React.FC<ModalProps> = (props) => {
     children,
     afterClose,
     width = 520,
+    confirmLoading,
+    destroyOnClose = false,
     ...rest
   } = props;
+  console.log('【Modal】');
 
   const [animationVisible, setAnimationVisible] = useState(false);
 
@@ -99,6 +104,8 @@ const Modal: React.FC<ModalProps> = (props) => {
             onCancel={handleCancel}
             onBeforeEnter={handleFocus}
             title={title}
+            confirmLoading={confirmLoading}
+            destroyOnClose={destroyOnClose}
           >
             {children}
           </Content>
