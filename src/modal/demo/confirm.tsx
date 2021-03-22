@@ -10,7 +10,7 @@ const { confirm } = Modal;
 
 function showConfirm() {
   confirm({
-    title: 'Do you Want to delete these items?',
+    title: 'Title',
     content: 'Some descriptions',
     onOk() {
       console.log('OK');

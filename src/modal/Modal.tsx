@@ -5,21 +5,9 @@ import { createScopedClasses } from '@/utils';
 import ReactDOM from 'react-dom';
 import Content from './Content';
 import Mask from './Mask';
+import { ModalProps } from './interface';
 
 const sc = createScopedClasses('modal');
-
-export interface ModalProps {
-  visible: boolean;
-  onCancel?: (e: React.SyntheticEvent<HTMLElement>) => void;
-  onOk?: (e: React.SyntheticEvent<HTMLElement>) => void;
-  afterClose?: () => void;
-  keyboard?: boolean;
-  width?: string | number;
-  title?: React.ReactNode;
-  confirmLoading?: boolean;
-  destroyOnClose?: boolean;
-  footer?: React.ReactNode;
-}
 
 const Modal: React.FC<ModalProps> = (props) => {
   const {
