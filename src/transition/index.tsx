@@ -59,6 +59,10 @@ const Transition = (props: TransitionProps) => {
 
   const afterCloseRef = useRef<(() => void) | undefined>(afterClose);
 
+  useEffect(() => {
+    afterClose && (afterCloseRef.current = afterClose);
+  }, [afterClose]);
+
   // 外部各时刻样式都为数组，避免直接依赖
   const transitionStyleRef = useRef(transitionActive);
 
@@ -68,6 +72,10 @@ const Transition = (props: TransitionProps) => {
   const afterLeaveRef = useRef(afterLeave);
 
   const onBeforeEnterRef = useRef(onBeforeEnter);
+
+  useEffect(() => {
+    onBeforeEnter && (onBeforeEnterRef.current = onBeforeEnter);
+  }, [onBeforeEnter]);
 
   useEffect(() => {
     if (visible) {
