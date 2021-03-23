@@ -24,7 +24,6 @@ const Modal: React.FC<ModalProps> = (props) => {
     footer,
     ...rest
   } = props;
-  console.log('【Modal】');
 
   const [animationVisible, setAnimationVisible] = useState(false);
 

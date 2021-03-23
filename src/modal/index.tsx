@@ -1,8 +1,14 @@
 import React from 'react';
-import Modal from './Modal';
-import confirm from './confirm';
-import TextArea from './TextArea';
+import InternalModal from './Modal';
+import open from './open';
+import { ModalProps } from './interface';
 
-Modal.confirm = confirm;
+interface CompoundedComponent extends React.FC<ModalProps> {
+  open: typeof open;
+}
+
+const Modal = InternalModal as CompoundedComponent;
+
+Modal.open = open;
 
 export default Modal;

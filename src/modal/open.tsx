@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom';
 import Modal from '.';
 import { ModalFuncProps, ModalProps } from './interface';
 
-const confirm = (config: ModalFuncProps) => {
+const open = (config: ModalFuncProps) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
 
-  const { content, onOk } = config;
+  const { content, onOk, ...restConfig } = config;
 
-  let localConfig: ModalProps = { ...config, destroyOnClose: true };
+  let localConfig: ModalProps = {
+    ...restConfig,
+    destroyOnClose: true,
+    visible: false,
+  };
 
   const render = (props: ModalProps) => {
     const { ...rest } = props;
@@ -36,16 +40,17 @@ const confirm = (config: ModalFuncProps) => {
 
   const localOnOk = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const fn = onOk;
+
     if (fn) {
       Promise.resolve()
         .then(() => {
           const res = fn(e);
 
-          // return res;
-          if (res && res?.then) {
+          // 判断是否返回的是promise
+          if (res?.then) {
             return {
               type: 1,
-              res,
+              res: res,
             };
           }
           return {
@@ -55,24 +60,23 @@ const confirm = (config: ModalFuncProps) => {
         })
         .then((res) => {
           if (res.type === 1) {
-            // console.log('设置loading');
-            localConfig = { ...localConfig, confirmLoading: true };
+            localConfig = {
+              ...localConfig,
+              visible: true,
+              confirmLoading: true,
+            };
             render(localConfig);
 
-            return res.res
-              .then((aa) => {
-                localConfig = {
-                  ...localConfig,
-                  confirmLoading: false,
-                  visible: false,
-                };
-                render(localConfig);
-              })
-              .catch(() => {
-                console.log('爆炸了');
-              });
+            return (res.res as PromiseLike<any>).then(() => {
+              console.log('!!!!!!');
+              localConfig = {
+                ...localConfig,
+                confirmLoading: false,
+                visible: false,
+              };
+              render(localConfig);
+            });
           }
-
           close();
         });
     }
@@ -81,4 +85,4 @@ const confirm = (config: ModalFuncProps) => {
   render({ ...localConfig, visible: true, onCancel: close, onOk: localOnOk });
 };
 
-export default confirm;
+export default open;
