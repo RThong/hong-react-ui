@@ -54,7 +54,7 @@ const Modal: React.FC<ModalProps> = (props) => {
   };
 
   useEffect(() => {
-    visible && setAnimationVisible(true);
+    visible && setAnimationVisible((v) => (!v ? true : false));
   }, [visible]);
 
   const handleFocus = () => {

@@ -34,6 +34,6 @@ export interface ModalProps {
   keyboard?: boolean;
 }
 
-export interface ModalFuncProps extends ModalProps {
+export interface ModalFuncProps extends Omit<ModalProps, 'confirmLoading'> {
   content: React.ReactNode;
 }

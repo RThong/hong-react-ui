@@ -11,14 +11,19 @@ const { confirm } = Modal;
 function showConfirm() {
   confirm({
     title: 'Title',
-    content: 'Some descriptions',
+    content: (
+      <div>
+        <div>Some contents...</div>
+        <div>Some contents...</div>
+        <div>Some contents...</div>
+      </div>
+    ),
     onOk() {
       console.log('OK');
     },
     onCancel() {
       console.log('Cancel');
     },
-    visible: true,
   });
 }
 

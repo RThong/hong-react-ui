@@ -46,7 +46,7 @@ const Transition = (props: TransitionProps) => {
   } = props;
 
   // 控制动画结束后元素的隐藏
-  const [animationVisible, setAnimationVisible] = useState(visible);
+  const [animationVisible, setAnimationVisible] = useState(false);
 
   // 具体动画进行通过设置元素style
   const [contentStyle, setContentStyle] = useState<React.CSSProperties>({});
@@ -78,7 +78,7 @@ const Transition = (props: TransitionProps) => {
   }, [onBeforeEnter]);
 
   useEffect(() => {
-    if (visible) {
+    if (visible && !animationVisible) {
       setContentStyle({
         transition: '',
         ...(beforeEnterRef.current || {}),
@@ -86,7 +86,7 @@ const Transition = (props: TransitionProps) => {
       setAnimationVisible(visible);
       setStatus(Status.beforeEnter);
     }
-  }, [visible]);
+  }, [visible, animationVisible]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -147,10 +147,12 @@ const Transition = (props: TransitionProps) => {
 
       // 退场动画结束
       if (status === Status.activeLeave) {
-        setStatus(Status.afterLeave);
-        setContentStyle({});
-        setAnimationVisible(false);
-        afterCloseRef.current?.();
+        setTimeout(() => {
+          setStatus(Status.afterLeave);
+          setContentStyle({});
+          setAnimationVisible(false);
+          afterCloseRef.current?.();
+        }, 50);
       }
     };
     const target = ref.current;
