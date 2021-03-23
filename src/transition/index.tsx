@@ -78,15 +78,15 @@ const Transition = (props: TransitionProps) => {
   }, [onBeforeEnter]);
 
   useEffect(() => {
-    if (visible && !animationVisible) {
+    if (visible) {
       setContentStyle({
         transition: '',
         ...(beforeEnterRef.current || {}),
       });
-      setAnimationVisible(visible);
+      setAnimationVisible((v) => (!v ? true : false));
       setStatus(Status.beforeEnter);
     }
-  }, [visible, animationVisible]);
+  }, [visible]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -139,6 +139,7 @@ const Transition = (props: TransitionProps) => {
   }, [status, visible]);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     const transitionCb = () => {
       // 进场动画结束
       if (status === Status.activeEnter) {
@@ -147,11 +148,9 @@ const Transition = (props: TransitionProps) => {
 
       // 退场动画结束
       if (status === Status.activeLeave) {
-        setTimeout(() => {
+        timer = setTimeout(() => {
           setStatus(Status.afterLeave);
-          setContentStyle({});
           setAnimationVisible(false);
-          afterCloseRef.current?.();
         }, 50);
       }
     };
@@ -160,8 +159,16 @@ const Transition = (props: TransitionProps) => {
     target?.addEventListener('transitionend', transitionCb);
     return () => {
       target?.removeEventListener('transitionend', transitionCb);
+      timer && clearTimeout(timer);
     };
   }, [status]);
+
+  useEffect(() => {
+    if (!animationVisible && status === Status.afterLeave) {
+      setContentStyle({});
+      afterCloseRef.current?.();
+    }
+  }, [animationVisible, status]);
 
   return children && ((removeOnLeave && animationVisible) || !removeOnLeave)
     ? children(
