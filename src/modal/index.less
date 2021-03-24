@@ -43,9 +43,8 @@
     background-clip: padding-box;
     border: 0;
     border-radius: 2px;
-    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
-      0 9px 28px 8px rgb(0 0 0 / 5%);
     pointer-events: auto;
+    .shadow();
   }
 
   &-close {
@@ -116,5 +115,22 @@
       margin-bottom: 0;
       margin-left: 8px;
     }
+  }
+
+  &-centered {
+    text-align: center;
+    &::before {
+      display: inline-block;
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+      content: '';
+    }
+  }
+  &-centered & {
+    top: 0;
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
   }
 }

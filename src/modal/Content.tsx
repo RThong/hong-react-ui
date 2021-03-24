@@ -1,25 +1,16 @@
+import Button from '@/button';
+import Transition from '@/transition';
 import { createScopedClasses } from '@/utils';
 import { CloseOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import React from 'react';
-import { Button, Transition } from '..';
+import { ModalProps } from './interface';
 
 const sc = createScopedClasses('modal');
 
-interface ContentProps {
-  width: string | number;
-  visible: boolean;
-  afterClose: () => void;
-  title: React.ReactNode;
-  onOk?: (e: React.MouseEvent<HTMLElement>) => void;
-  onCancel?: (e: React.MouseEvent<HTMLElement>) => void;
-  confirmLoading?: boolean;
-  onBeforeEnter?: () => void;
-  destroyOnClose?: boolean;
-  footer?: React.ReactNode;
-}
-
-const Content: React.FC<ContentProps> = (props) => {
+const Content: React.FC<ModalProps & { onBeforeEnter?: () => void }> = (
+  props,
+) => {
   const {
     visible,
     afterClose,
@@ -32,6 +23,9 @@ const Content: React.FC<ContentProps> = (props) => {
     confirmLoading,
     destroyOnClose,
     footer,
+    closable,
+    className,
+    style,
   } = props;
 
   const contentStyle = {
@@ -59,20 +53,22 @@ const Content: React.FC<ContentProps> = (props) => {
     >
       {({ style: motionStyle }, motionRef) => (
         <div
-          className={classnames(sc())}
-          style={{ ...contentStyle, ...motionStyle }}
+          className={classnames(sc(), className)}
+          style={{ ...contentStyle, ...motionStyle, ...style }}
           ref={motionRef}
         >
           <div className={classnames(sc('content'))}>
-            <button
-              onClick={onCancel}
-              type="button"
-              className={classnames(sc('close'))}
-            >
-              <span className={classnames(sc('close-x'))}>
-                <CloseOutlined />
-              </span>
-            </button>
+            {closable && (
+              <button
+                onClick={onCancel}
+                type="button"
+                className={classnames(sc('close'))}
+              >
+                <span className={classnames(sc('close-x'))}>
+                  <CloseOutlined />
+                </span>
+              </button>
+            )}
 
             <div className={classnames(sc('header'))}>
               <div className={classnames(sc('title'))}>{title}</div>

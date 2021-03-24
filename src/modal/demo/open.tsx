@@ -27,7 +27,7 @@ const showModal = () => {
   });
 };
 
-const showPromiseConfirm = () => {
+const showPromiseModal = () => {
   open({
     title: 'Do you want to delete these items?',
     content:
@@ -48,7 +48,7 @@ const Demo = () => {
         Open
       </Button>
 
-      <Button onClick={showPromiseConfirm}>With Promise</Button>
+      <Button onClick={showPromiseModal}>With Promise</Button>
     </div>
   );
 };

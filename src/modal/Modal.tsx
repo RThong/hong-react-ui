@@ -22,7 +22,13 @@ const Modal: React.FC<ModalProps> = (props) => {
     confirmLoading,
     destroyOnClose = false,
     footer,
-    ...rest
+    closable = true,
+    centered = false,
+    maskClosable = true,
+    wrapClassName,
+    mask = true,
+    className,
+    style,
   } = props;
 
   const [animationVisible, setAnimationVisible] = useState(false);
@@ -38,6 +44,9 @@ const Modal: React.FC<ModalProps> = (props) => {
   };
 
   const handleWrapperClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!maskClosable) {
+      return;
+    }
     if (e.target === wrapperRef.current) {
       handleCancel(e);
     }
@@ -45,8 +54,6 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const onWrapperKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (keyboard && e.key === 'Escape') {
-      console.log('【onWrapperKeyDown】');
-
       e.stopPropagation();
       handleCancel(e);
     }
@@ -61,7 +68,6 @@ const Modal: React.FC<ModalProps> = (props) => {
   };
 
   const handleAfterClose = () => {
-    console.log('【handleAfterClose】');
     setAnimationVisible(false);
     afterClose?.();
   };
@@ -69,14 +75,18 @@ const Modal: React.FC<ModalProps> = (props) => {
   const renderModal = () => {
     return (
       <div className={classnames(sc('root'))}>
-        <Mask visible={visible} />
+        {mask && <Mask visible={visible} />}
 
         <div
           tabIndex={-1}
           ref={wrapperRef}
           onKeyDown={onWrapperKeyDown}
           onClick={handleWrapperClick}
-          className={classnames(sc('wrap'))}
+          className={classnames(
+            sc('wrap'),
+            { [sc('centered')]: centered },
+            wrapClassName,
+          )}
           style={
             animationVisible
               ? undefined
@@ -96,6 +106,10 @@ const Modal: React.FC<ModalProps> = (props) => {
             confirmLoading={confirmLoading}
             destroyOnClose={destroyOnClose}
             footer={footer}
+            closable={closable}
+            maskClosable={maskClosable}
+            className={className}
+            style={style}
           >
             {children}
           </Content>

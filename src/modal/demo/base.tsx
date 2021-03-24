@@ -19,13 +19,11 @@ const Demo = () => {
         visible={visible}
         onOk={() => {
           console.log('onOk');
-          setVisible(false);
         }}
         onCancel={() => {
           console.log('【onCancel】');
           setVisible(false);
         }}
-        afterClose={() => console.log('完全关闭')}
       >
         <p>Some contents...</p>
         <p>Some contents...</p>

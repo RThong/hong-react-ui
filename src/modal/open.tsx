@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Modal from '.';
+import Modal from './Modal';
 import { ModalFuncProps, ModalProps } from './interface';
 
 const open = (config: ModalFuncProps) => {
