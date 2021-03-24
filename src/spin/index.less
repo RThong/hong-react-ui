@@ -83,7 +83,7 @@
     }
   }
 
-  .ant-spin-nested-loading {
+  &-nested-loading {
     position: relative;
   }
 
@@ -111,10 +111,45 @@
     opacity: 0.5;
     user-select: none;
     pointer-events: none;
+    &::after {
+      opacity: 0.4;
+      pointer-events: auto;
+    }
   }
   &-container {
     position: relative;
     transition: opacity 0.3s;
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      opacity: 0;
+      transition: all 0.3s;
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  &-nested-loading > div > &&-show-text &-dot {
+    margin-top: -20px;
+  }
+
+  &&-show-text &-text {
+    display: block;
+  }
+
+  &-nested-loading > div > & &-text {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    padding-top: 5px;
+    text-shadow: 0 1px 2px #fff;
   }
 }
 

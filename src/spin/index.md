@@ -26,3 +26,18 @@ group:
 ### 容器
 
 <code src="./demo/container"></code>
+
+### 卡片加载中
+
+<code src="./demo/spinning"></code>
+
+### 自定义描述文案
+
+<code src="./demo/tip"></code>
+
+| 参数             | 说明                                         | 类型      | 默认值    |
+| ---------------- | -------------------------------------------- | --------- | --------- |
+| size             | 组件大小，可选值为 `small` `default` `large` | `string`  | `default` |
+| spinning         | 是否为加载中状态                             | `boolean` | `true`    |
+| tip              | 当作为包裹元素时，可以自定义描述文案         | `string`  | `--`      |
+| wrapperClassName | 包装器的类属性                               | `string`  | `--`      |
