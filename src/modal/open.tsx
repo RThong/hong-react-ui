@@ -7,7 +7,7 @@ const open = (config: ModalFuncProps) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
 
-  const { content, onOk, ...restConfig } = config;
+  const { content, onOk, afterClose, ...restConfig } = config;
 
   let localConfig: ModalProps = {
     ...restConfig,
@@ -17,7 +17,7 @@ const open = (config: ModalFuncProps) => {
 
   const render = (props: ModalProps) => {
     const { ...rest } = props;
-    ReactDOM.render(<Modal {...rest}>{content}</Modal>, div);
+    ReactDOM.render(<Modal {...rest}>{content ?? null}</Modal>, div);
   };
 
   const destroy = () => {
@@ -32,57 +32,78 @@ const open = (config: ModalFuncProps) => {
       ...localConfig,
       visible: false,
       afterClose: () => {
+        afterClose?.();
         destroy();
       },
     };
     render(localConfig);
   };
 
-  const localOnOk = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    const fn = onOk;
+  const localOnOk = () => {
+    if (!onOk) {
+      close();
+      return;
+    }
 
-    if (fn) {
-      Promise.resolve()
-        .then(() => {
-          const res = fn(e);
+    let returnValueOfOnOk: any;
 
-          // 判断是否返回的是promise
-          if (res?.then) {
-            return {
-              type: 1,
-              res: res,
-            };
-          }
+    if (onOk.length) {
+      returnValueOfOnOk = onOk(close);
+    } else {
+      returnValueOfOnOk = onOk();
+      if (!returnValueOfOnOk) {
+        close();
+        return;
+      }
+    }
+
+    // 声明了close  &  没声明但是有返回值
+    Promise.resolve()
+      .then(() => {
+        // 判断是否返回的是promise
+        if (returnValueOfOnOk?.then) {
           return {
-            type: 2,
-            res: res,
+            type: 1,
+            res: returnValueOfOnOk,
           };
-        })
-        .then((res) => {
-          if (res.type === 1) {
+        }
+        return {
+          type: 2,
+          res: returnValueOfOnOk,
+        };
+      })
+      .then((res) => {
+        if (res.type === 1) {
+          localConfig = {
+            ...localConfig,
+            visible: true,
+            confirmLoading: true,
+          };
+          render(localConfig);
+
+          return (res.res as PromiseLike<any>).then(() => {
             localConfig = {
               ...localConfig,
-              visible: true,
-              confirmLoading: true,
+              confirmLoading: false,
+              visible: false,
             };
             render(localConfig);
+          });
+        }
 
-            return (res.res as PromiseLike<any>).then(() => {
-              console.log('!!!!!!');
-              localConfig = {
-                ...localConfig,
-                confirmLoading: false,
-                visible: false,
-              };
-              render(localConfig);
-            });
-          }
+        if (!onOk.length) {
           close();
-        });
-    }
+        }
+      });
+  };
+  localConfig = {
+    ...localConfig,
+    visible: true,
+    onCancel: close,
+    onOk: localOnOk,
   };
 
-  render({ ...localConfig, visible: true, onCancel: close, onOk: localOnOk });
+  render(localConfig);
 };
 
 export default open;

@@ -3,7 +3,7 @@
  * desc: 使用组件声明一个对话框，通过控制 visible 属性来显示/隐藏。
  */
 import React, { useState } from 'react';
-import { Button, Modal } from 'hong-react-ui';
+import { Button, Modal, Input } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
 
 const Demo = () => {
@@ -21,13 +21,15 @@ const Demo = () => {
           console.log('onOk');
         }}
         onCancel={() => {
-          console.log('【onCancel】');
+          console.log('onCancel');
           setVisible(false);
         }}
+        destroyOnClose
       >
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
+        <Input />
       </Modal>
     </div>
   );

@@ -3,6 +3,8 @@ import InternalModal from './Modal';
 import open from './open';
 import { ModalProps } from './interface';
 
+export { ModalProps, ModalFuncProps } from './interface';
+
 interface CompoundedComponent extends React.FC<ModalProps> {
   open: typeof open;
 }
