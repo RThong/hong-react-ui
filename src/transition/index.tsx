@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import './index.less';
+
 export interface TransitionProps {
   beforeEnter?: React.CSSProperties;
   afterEnter: React.CSSProperties;

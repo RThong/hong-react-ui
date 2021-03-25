@@ -2,6 +2,8 @@ import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
 import React from 'react';
 
+import './index.less';
+
 const sc = createScopedClasses('space');
 
 export interface SpaceProps {

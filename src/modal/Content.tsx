@@ -5,6 +5,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import React from 'react';
 import { ModalProps } from './interface';
+import './index.less';
 
 const sc = createScopedClasses('modal');
 
