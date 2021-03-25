@@ -11,7 +11,7 @@ const Demo = () => {
     <Space direction="vertical">
       <div
         style={{
-          width: '100%',
+          width: '300px',
           border: '1px solid #f0f0f0',
           padding: '20px 24px',
         }}
@@ -21,7 +21,7 @@ const Demo = () => {
       </div>
       <div
         style={{
-          width: '100%',
+          width: '300px',
           border: '1px solid #f0f0f0',
           padding: '20px 24px',
         }}

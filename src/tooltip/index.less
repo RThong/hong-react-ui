@@ -1,0 +1,166 @@
+@import '../style/index.less';
+
+.hong-spin {
+  position: absolute;
+  display: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.85);
+  color: @primary;
+  font-size: 14px;
+  line-height: 1.5715;
+  text-align: center;
+  vertical-align: middle;
+  list-style: none;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+  &-spinning {
+    position: static;
+    display: inline-block;
+    opacity: 1;
+  }
+
+  &-dot {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    font-size: 20px;
+
+    &-spin {
+      transform: rotate(45deg);
+      animation: hongRotate 1.2s linear infinite;
+    }
+  }
+
+  &-dot-item {
+    position: absolute;
+    display: block;
+    width: 9px;
+    height: 9px;
+    background-color: @primary;
+    border-radius: 100%;
+    transform: scale(0.75);
+    transform-origin: 50% 50%;
+    opacity: 0.3;
+    animation: hongSpinMove 1s linear infinite alternate;
+    &:first-child {
+      top: 0;
+      left: 0;
+    }
+    &:nth-child(2) {
+      top: 0;
+      right: 0;
+      animation-delay: 0.4s;
+    }
+    &:nth-child(3) {
+      right: 0;
+      bottom: 0;
+      animation-delay: 0.8s;
+    }
+    &:nth-child(4) {
+      bottom: 0;
+      left: 0;
+      animation-delay: 1.2s;
+    }
+  }
+
+  &-sm &-dot {
+    font-size: 14px;
+    i {
+      width: 6px;
+      height: 6px;
+    }
+  }
+
+  &-lg &-dot {
+    font-size: 32px;
+    i {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &-nested-loading {
+    position: relative;
+  }
+
+  &-nested-loading > div > & {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+  }
+
+  &-nested-loading > div > & &-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -10px;
+  }
+
+  &-blur {
+    clear: both;
+    overflow: hidden;
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+    &::after {
+      opacity: 0.4;
+      pointer-events: auto;
+    }
+  }
+  &-container {
+    position: relative;
+    transition: opacity 0.3s;
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      opacity: 0;
+      transition: all 0.3s;
+      content: '';
+      pointer-events: none;
+    }
+  }
+
+  &-nested-loading > div > &&-show-text &-dot {
+    margin-top: -20px;
+  }
+
+  &&-show-text &-text {
+    display: block;
+  }
+
+  &-nested-loading > div > & &-text {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    padding-top: 5px;
+    text-shadow: 0 1px 2px #fff;
+  }
+}
+
+@keyframes hongSpinMove {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hongRotate {
+  to {
+    transform: rotate(405deg);
+  }
+}

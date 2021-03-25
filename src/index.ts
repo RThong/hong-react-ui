@@ -7,3 +7,4 @@ export { default as Modal } from './modal';
 export { default as Transition } from './transition';
 export { default as Spin } from './spin';
 export { default as Space } from './space';
+export { default as Tooltip } from './tooltip';
