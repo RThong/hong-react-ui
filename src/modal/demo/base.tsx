@@ -29,7 +29,6 @@ const Demo = () => {
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
-        <Input />
       </Modal>
     </div>
   );
