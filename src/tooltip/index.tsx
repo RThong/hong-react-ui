@@ -3,19 +3,29 @@ import classnames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Transition, Button } from '..';
+import { useDelayTime } from './hooks';
 
 import './index.less';
 
+enum Trigger {
+  'click' = 'click',
+  'hover' = 'hover',
+  'focus' = 'focus',
+}
+
 export interface TooltipProps {
   title?: string;
+  trigger?: Trigger;
 }
 
 const sc = createScopedClasses('tooltip');
 
 const Tooltip: React.FC<TooltipProps> = (props) => {
-  const { children } = props;
+  const { children, trigger = Trigger.hover } = props;
 
   const [derivedVisible, setDerivedVisible] = useState(false);
+
+  const delaySetPopupVisible = useDelayTime();
 
   const [rect, setRect] = useState<{
     x: number;
@@ -42,7 +52,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
 
     return {
       x: triggerLeft + scrollX + triggerWidth / 2,
-      y: triggerTop + scrollY,
+      y: triggerTop + scrollY - 50,
     };
   }, []);
   // const { position } = this.props
@@ -68,15 +78,20 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
   // }
 
   useEffect(() => {
-    // const temp = targetRef.current?.getBoundingClientRect() as DOMRect;
-    // console.log('【temp】', temp);
-
     setRect(getRect());
   }, [getRect]);
 
   useEffect(() => {
+    if (trigger !== Trigger.click) {
+      return;
+    }
+
     const cb = (e: MouseEvent) => {
-      if (e.target !== tooltipRef.current) {
+      if (
+        derivedVisible &&
+        tooltipRef.current &&
+        !tooltipRef.current?.contains(e.target as HTMLElement)
+      ) {
         setDerivedVisible(false);
       }
     };
@@ -85,14 +100,51 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     return () => {
       document.body.removeEventListener('click', cb);
     };
-  }, []);
+  }, [derivedVisible, trigger]);
+
+  const handleClick = () => {
+    if (trigger !== Trigger.click) {
+      return;
+    }
+    setDerivedVisible(true);
+  };
+
+  const handleMouseEnter = () => {
+    if (trigger !== Trigger.hover) {
+      return;
+    }
+    delaySetPopupVisible(() => setDerivedVisible(true));
+  };
+
+  const handleMouseLeave = () => {
+    if (trigger !== Trigger.hover) {
+      return;
+    }
+    delaySetPopupVisible(() => setDerivedVisible(false), 0.1);
+  };
+
+  const handleFocus = () => {
+    if (trigger !== Trigger.focus) {
+      return;
+    }
+    setDerivedVisible(true);
+  };
+
+  const handleBlur = () => {
+    if (trigger !== Trigger.focus) {
+      return;
+    }
+    setDerivedVisible(false);
+  };
 
   return (
     <>
       {React.cloneElement(children, {
-        onClick: () => {
-          setDerivedVisible(true);
-        },
+        onClick: handleClick,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
         // onFocus: () => console.log('【onFocus】'),
 
         ref: targetRef,
@@ -107,25 +159,16 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
         {({ className, style }, ref) => {
           tooltipRef.current = ref.current;
           return ReactDOM.createPortal(
-            // <div
-            //   ref={ref}
-            //   style={{
-            //     width: 200,
-            //     height: 100,
-            //     background: 'green',
-            //     position: 'absolute',
-            //     left: rect?.x,
-            //     top: rect?.y,
-            //     ...style,
-            //   }}
-            // >
-            //   tooltip
-            // </div>,
-
             <div
               ref={ref}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={classnames(sc(), sc('placement-top'), sc('hidden'))}
-              style={{ left: rect?.x, top: rect?.y, ...style }}
+              style={{
+                left: rect?.x,
+                top: rect?.y,
+                ...style,
+              }}
               // style="left: -556px; top: -563px; transform-origin: 50% 46px; pointer-events: none;"
             >
               <div className={classnames(sc('content'))}>
