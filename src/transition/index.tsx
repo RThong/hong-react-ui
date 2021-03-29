@@ -91,12 +91,12 @@ const Transition = (props: TransitionProps) => {
   }, [visible]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     if (status === Status.beforeEnter && visible) {
       // 在元素创建后调用
       onBeforeEnterRef.current?.();
 
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
           ...(afterEnterRef.current || {}),
@@ -106,7 +106,7 @@ const Transition = (props: TransitionProps) => {
     }
 
     return () => {
-      timer && clearTimeout(timer);
+      timer !== undefined && window.clearTimeout(timer);
     };
   }, [status, visible]);
 
@@ -121,12 +121,12 @@ const Transition = (props: TransitionProps) => {
   }, [status, visible]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     if (
       (status === Status.beforeLeave && beforeLeaveRef.current && !visible) ||
       (status === Status.afterEnter && !beforeLeaveRef.current && !visible)
     ) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setContentStyle({
           ...transitionStyleRef.current,
           ...(afterLeaveRef.current || {}),
@@ -136,12 +136,12 @@ const Transition = (props: TransitionProps) => {
     }
 
     return () => {
-      timer && clearTimeout(timer);
+      timer !== undefined && window.clearTimeout(timer);
     };
   }, [status, visible]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     const transitionCb = () => {
       // 进场动画结束
       if (status === Status.activeEnter) {
@@ -150,7 +150,7 @@ const Transition = (props: TransitionProps) => {
 
       // 退场动画结束
       if (status === Status.activeLeave) {
-        timer = setTimeout(() => {
+        timer = window.setTimeout(() => {
           setStatus(Status.afterLeave);
           setAnimationVisible(false);
         }, 50);
@@ -161,7 +161,7 @@ const Transition = (props: TransitionProps) => {
     target?.addEventListener('transitionend', transitionCb);
     return () => {
       target?.removeEventListener('transitionend', transitionCb);
-      timer && clearTimeout(timer);
+      timer !== undefined && window.clearTimeout(timer);
     };
   }, [status]);
 
