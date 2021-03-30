@@ -16,14 +16,23 @@ enum Trigger {
 export interface TooltipProps {
   title?: string;
   trigger?: Trigger;
+  visible?: boolean;
 }
 
 const sc = createScopedClasses('tooltip');
 
 const Tooltip: React.FC<TooltipProps> = (props) => {
-  const { children, trigger = Trigger.hover } = props;
+  const { children, trigger = Trigger.hover, visible } = props;
 
-  const [derivedVisible, setDerivedVisible] = useState(false);
+  const [derivedVisible, setDerivedVisible] = useState(visible ?? false);
+
+  useEffect(() => {
+    if (visible === undefined) {
+      return;
+    }
+
+    setDerivedVisible(visible);
+  }, [visible]);
 
   const delaySetPopupVisible = useDelayTime();
 
@@ -82,7 +91,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
   }, [getRect]);
 
   useEffect(() => {
-    if (trigger !== Trigger.click) {
+    if (visible !== undefined || trigger !== Trigger.click) {
       return;
     }
 
@@ -100,38 +109,38 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     return () => {
       document.body.removeEventListener('click', cb);
     };
-  }, [derivedVisible, trigger]);
+  }, [derivedVisible, trigger, visible]);
 
   const handleClick = () => {
-    if (trigger !== Trigger.click) {
+    if (visible !== undefined || trigger !== Trigger.click) {
       return;
     }
     setDerivedVisible(true);
   };
 
   const handleMouseEnter = () => {
-    if (trigger !== Trigger.hover) {
+    if (visible !== undefined || trigger !== Trigger.hover) {
       return;
     }
     delaySetPopupVisible(() => setDerivedVisible(true));
   };
 
   const handleMouseLeave = () => {
-    if (trigger !== Trigger.hover) {
+    if (visible !== undefined || trigger !== Trigger.hover) {
       return;
     }
     delaySetPopupVisible(() => setDerivedVisible(false), 0.1);
   };
 
   const handleFocus = () => {
-    if (trigger !== Trigger.focus) {
+    if (visible !== undefined || trigger !== Trigger.focus) {
       return;
     }
     setDerivedVisible(true);
   };
 
   const handleBlur = () => {
-    if (trigger !== Trigger.focus) {
+    if (visible !== undefined || trigger !== Trigger.focus) {
       return;
     }
     setDerivedVisible(false);
@@ -145,8 +154,6 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
         onMouseLeave: handleMouseLeave,
         onFocus: handleFocus,
         onBlur: handleBlur,
-        // onFocus: () => console.log('【onFocus】'),
-
         ref: targetRef,
       })}
 
