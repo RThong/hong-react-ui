@@ -20,6 +20,7 @@ const Group = React.forwardRef<any, RadioGroupProps>((props, ref) => {
     disabled = false,
     style,
     className,
+    ...restProps
   } = props;
 
   const [value, setValue] = useState<any>(
@@ -72,6 +73,7 @@ const Group = React.forwardRef<any, RadioGroupProps>((props, ref) => {
       className={classnames(sc('group'), sc(`group-${buttonStyle}`), className)}
       style={style}
       ref={ref}
+      {...restProps}
     >
       {renderOptionsRadio()}
     </div>

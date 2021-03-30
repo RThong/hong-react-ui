@@ -1,6 +1,7 @@
 import React from 'react';
 
-export interface RadioProps {
+export interface RadioProps
+  extends Omit<React.HTMLAttributes<HTMLLabelElement>, 'onChange'> {
   checked?: boolean;
   defaultChecked?: boolean;
   autoFocus?: boolean;
@@ -34,7 +35,8 @@ export interface Option {
   disabled?: boolean;
 }
 
-export interface RadioGroupProps {
+export interface RadioGroupProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options?: Array<string | Option>;
   defaultValue?: any;
   value?: any;

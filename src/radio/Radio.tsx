@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 
@@ -23,23 +23,20 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
     children,
     style,
     className,
+    ...restProps
   } = props;
 
   const [checked, setChecked] = useState(
     'checked' in props ? checkedProps : defaultChecked,
   );
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
-
   useEffect(() => {
     if (!autoFocus) {
       return;
     }
 
-    inputRef.current?.focus();
-  }, [autoFocus]);
+    ref?.current?.focus();
+  }, [autoFocus, ref]);
 
   useEffect(() => {
     if (checkedProps !== undefined) {
@@ -77,6 +74,7 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
         },
         className,
       )}
+      {...restProps}
     >
       <span
         className={classnames(`${prefixCls}`, {
@@ -85,7 +83,6 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
         })}
       >
         <input
-          ref={inputRef}
           type="radio"
           className={classnames(`${prefixCls}-input`)}
           value={value}
