@@ -12,6 +12,11 @@ export const useDelayTime = () => {
 
   const delaySetPopupVisible = (cb: () => void, delayTime = 0) => {
     clearTimer();
+    if (delayTime === 0) {
+      cb();
+      return;
+    }
+
     delayTimerRef.current = window.setTimeout(() => {
       cb();
       clearTimer();

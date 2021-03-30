@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
-import { Transition } from '..';
+import Transition from '../transition';
 import { useDelayTime } from './hooks';
 
 import './index.less';
@@ -26,6 +26,7 @@ export interface TooltipProps {
   visible?: boolean;
   defaultVisible?: boolean;
   placement?: Placement;
+  onVisibleChange?: (visible: boolean) => void;
 }
 
 const sc = createScopedClasses('tooltip');
@@ -38,7 +39,10 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     defaultVisible,
     title,
     placement = Placement.top,
+    onVisibleChange,
   } = props;
+
+  const delaySetPopupVisible = useDelayTime();
 
   const [derivedVisible, setDerivedVisible] = useState(
     visible ?? defaultVisible ?? false,
@@ -52,21 +56,18 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     setDerivedVisible(visible);
   }, [visible]);
 
-  const delaySetPopupVisible = useDelayTime();
-
   const [rect, setRect] = useState<{
     x: number;
     y: number;
   }>();
 
   // 目标元素
-  const targetRef = useRef<HTMLElement>(null);
+  const targetRef = useRef<HTMLElement | null>(null);
 
   // tooltip元素
-  const tooltipRef = useRef<HTMLElement>(null);
+  const tooltipRef = useRef<HTMLElement | null>(null);
 
   const getRect = useCallback(() => {
-    // const { wrapperRef, triggerNode } = this
     const {
       top: triggerTop,
       left: triggerLeft,
@@ -76,8 +77,6 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     const triggerWidth = triggerRight - triggerLeft;
     const triggerHeight = triggerBottom - triggerTop;
     const { scrollX, scrollY } = window;
-
-    console.log('【tooltipRef.current】', tooltipRef.current);
 
     switch (placement) {
       case 'top':
@@ -111,6 +110,14 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     }
   }, [getRect, title]);
 
+  const handleVisibleChange = useCallback(
+    (val: boolean) => {
+      setDerivedVisible(val);
+      derivedVisible !== val && onVisibleChange?.(val);
+    },
+    [onVisibleChange, derivedVisible],
+  );
+
   useEffect(() => {
     if (visible !== undefined || trigger !== Trigger.click) {
       return;
@@ -122,7 +129,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
         tooltipRef.current &&
         !tooltipRef.current?.contains(e.target as HTMLElement)
       ) {
-        setDerivedVisible(false);
+        handleVisibleChange(false);
       }
     };
     document.body.addEventListener('click', cb);
@@ -130,46 +137,46 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     return () => {
       document.body.removeEventListener('click', cb);
     };
-  }, [derivedVisible, trigger, visible]);
+  }, [derivedVisible, trigger, visible, handleVisibleChange]);
 
   const handleClick = () => {
     if (visible !== undefined || trigger !== Trigger.click) {
       return;
     }
-    setDerivedVisible(true);
+    handleVisibleChange(true);
   };
 
   const handleMouseEnter = () => {
     if (visible !== undefined || trigger !== Trigger.hover) {
       return;
     }
-    delaySetPopupVisible(() => setDerivedVisible(true));
+    delaySetPopupVisible(() => handleVisibleChange(true));
   };
 
   const handleMouseLeave = () => {
     if (visible !== undefined || trigger !== Trigger.hover) {
       return;
     }
-    delaySetPopupVisible(() => setDerivedVisible(false), 0.1);
+    delaySetPopupVisible(() => handleVisibleChange(false), 0.1);
   };
 
   const handleFocus = () => {
     if (visible !== undefined || trigger !== Trigger.focus) {
       return;
     }
-    setDerivedVisible(true);
+    handleVisibleChange(true);
   };
 
   const handleBlur = () => {
     if (visible !== undefined || trigger !== Trigger.focus) {
       return;
     }
-    setDerivedVisible(false);
+    handleVisibleChange(false);
   };
 
   return title !== undefined && title !== '' ? (
     <>
-      {React.cloneElement(children, {
+      {React.cloneElement(children as React.ReactElement, {
         onClick: handleClick,
         onMouseEnter: handleMouseEnter,
         onMouseLeave: handleMouseLeave,
@@ -179,12 +186,15 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
       })}
 
       <Transition
+        transitionActive={{
+          transition: 'all 0.1s cubic-bezier(0.645, 0.045, 0.355, 1) 0s',
+        }}
         visible={derivedVisible}
         beforeEnter={{ opacity: 0 }}
         afterEnter={{ opacity: 1 }}
         afterLeave={{ opacity: 0 }}
       >
-        {({ className, style }, ref) => {
+        {({ style }, ref) => {
           tooltipRef.current = ref.current;
           return ReactDOM.createPortal(
             <div
@@ -215,7 +225,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
       </Transition>
     </>
   ) : (
-    children
+    (children as React.ReactElement)
   );
 };
 
