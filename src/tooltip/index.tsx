@@ -105,10 +105,13 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
   }, [placement]);
 
   useEffect(() => {
+    if (!children) {
+      return;
+    }
     if (title !== undefined && title !== '') {
       setRect(getRect());
     }
-  }, [getRect, title]);
+  }, [getRect, title, children]);
 
   const handleVisibleChange = useCallback(
     (val: boolean) => {
@@ -173,6 +176,10 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     }
     handleVisibleChange(false);
   };
+
+  if (!children) {
+    return null;
+  }
 
   return title !== undefined && title !== '' ? (
     <>
