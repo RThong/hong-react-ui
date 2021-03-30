@@ -17,14 +17,17 @@ export interface TooltipProps {
   title?: string;
   trigger?: Trigger;
   visible?: boolean;
+  defaultVisible?: boolean;
 }
 
 const sc = createScopedClasses('tooltip');
 
 const Tooltip: React.FC<TooltipProps> = (props) => {
-  const { children, trigger = Trigger.hover, visible } = props;
+  const { children, trigger = Trigger.hover, visible, defaultVisible } = props;
 
-  const [derivedVisible, setDerivedVisible] = useState(visible ?? false);
+  const [derivedVisible, setDerivedVisible] = useState(
+    visible ?? defaultVisible ?? false,
+  );
 
   useEffect(() => {
     if (visible === undefined) {

@@ -11,7 +11,11 @@ const Demo = () => {
   return (
     <div>
       <Button onClick={() => setVisible((v) => !v)}>click</Button>
-      <Tooltip visible={visible}>
+      <Tooltip
+        //  visible={visible}
+        defaultVisible={true}
+        trigger="click"
+      >
         <span>Tooltip will show on mouse enter.</span>
       </Tooltip>
     </div>
