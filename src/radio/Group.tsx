@@ -9,7 +9,7 @@ import { RadioChangeEvent, RadioGroupProps } from './interface';
 
 const sc = createScopedClasses('radio');
 
-const Group: React.FC<RadioGroupProps> = (props) => {
+const Group = React.forwardRef<any, RadioGroupProps>((props, ref) => {
   const {
     buttonStyle = 'outline',
     optionType = 'default',
@@ -71,10 +71,11 @@ const Group: React.FC<RadioGroupProps> = (props) => {
     <div
       className={classnames(sc('group'), sc(`group-${buttonStyle}`), className)}
       style={style}
+      ref={ref}
     >
       {renderOptionsRadio()}
     </div>
   );
-};
+});
 
 export default Group;

@@ -8,7 +8,7 @@ const sc = createScopedClasses('spin');
 
 type Size = 'middle' | 'small' | 'large';
 
-export interface SpinProps {
+export interface SpinProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   /**
    * @description       组件大小，可选值为 `small` `default` `large`
    * @default           default
@@ -37,7 +37,7 @@ const SIZE_MAP = {
   large: 'lg',
 };
 
-const Spin: React.FC<SpinProps> = (props) => {
+const Spin = React.forwardRef<any, SpinProps>((props, ref) => {
   const {
     size = 'middle',
     style,
@@ -46,10 +46,11 @@ const Spin: React.FC<SpinProps> = (props) => {
     tip,
     wrapperClassName,
     className,
+    ...restProps
   } = props;
 
   const renderSpin = () => {
-    return (
+    return children ? (
       <div
         className={classnames(
           sc(),
@@ -70,12 +71,39 @@ const Spin: React.FC<SpinProps> = (props) => {
         </span>
         {tip && <div className={classnames(sc('text'))}>{tip}</div>}
       </div>
+    ) : (
+      <div
+        className={classnames(
+          sc(),
+          sc('spinning'),
+          {
+            [sc(SIZE_MAP[size])]: size !== 'middle',
+            [sc('show-text')]: tip,
+          },
+          className,
+        )}
+        style={style}
+        ref={ref}
+        {...restProps}
+      >
+        <span className={classnames(sc('dot'), sc('dot-spin'))}>
+          <i className={classnames(sc('dot-item'))} />
+          <i className={classnames(sc('dot-item'))} />
+          <i className={classnames(sc('dot-item'))} />
+          <i className={classnames(sc('dot-item'))} />
+        </span>
+        {tip && <div className={classnames(sc('text'))}>{tip}</div>}
+      </div>
     );
   };
 
   if (children) {
     return (
-      <div className={classnames(sc('nested-loading'), wrapperClassName)}>
+      <div
+        ref={ref}
+        className={classnames(sc('nested-loading'), wrapperClassName)}
+        {...restProps}
+      >
         {spinning && <div>{renderSpin()}</div>}
         <div
           className={classnames(sc('container'), { [sc('blur')]: spinning })}
@@ -86,6 +114,6 @@ const Spin: React.FC<SpinProps> = (props) => {
     );
   }
   return renderSpin();
-};
+});
 
 export default Spin;

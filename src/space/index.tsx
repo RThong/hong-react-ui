@@ -1,12 +1,12 @@
+import React, { HTMLAttributes } from 'react';
 import { createScopedClasses } from '@/utils';
 import classnames from 'classnames';
-import React from 'react';
 
 import './index.less';
 
 const sc = createScopedClasses('space');
 
-export interface SpaceProps {
+export interface SpaceProps extends HTMLAttributes<HTMLDivElement> {
   direction?: 'vertical' | 'horizontal';
   align?: 'start' | 'end' | 'center' | 'baseline';
   size?: 'small' | 'middle' | 'large' | number;
@@ -19,13 +19,15 @@ const SIZE_MAP = {
   large: 24,
 };
 
-const Space: React.FC<SpaceProps> = (props) => {
+const Space = React.forwardRef<any, SpaceProps>((props, ref) => {
   const {
     children,
     direction = 'horizontal',
     size = 'small',
     align,
     split,
+    className,
+    ...restProps
   } = props;
 
   const nodes = Array.isArray(children)
@@ -37,14 +39,21 @@ const Space: React.FC<SpaceProps> = (props) => {
 
   return (
     <div
-      className={classnames(sc(), {
-        [sc('horizontal')]: direction === 'horizontal',
-        [sc('align-center')]: direction === 'horizontal' || align === 'center',
-        [sc('align-start')]: align === 'start',
-        [sc('align-end')]: align === 'end',
-        [sc('align-baseline')]: align === 'baseline',
-        [sc('vertical')]: direction === 'vertical',
-      })}
+      ref={ref}
+      className={classnames(
+        sc(),
+        {
+          [sc('horizontal')]: direction === 'horizontal',
+          [sc('align-center')]:
+            direction === 'horizontal' || align === 'center',
+          [sc('align-start')]: align === 'start',
+          [sc('align-end')]: align === 'end',
+          [sc('align-baseline')]: align === 'baseline',
+          [sc('vertical')]: direction === 'vertical',
+        },
+        className,
+      )}
+      {...restProps}
     >
       {nodes.map((child, i) => {
         return (
@@ -85,6 +94,6 @@ const Space: React.FC<SpaceProps> = (props) => {
       })}
     </div>
   );
-};
+});
 
 export default Space;

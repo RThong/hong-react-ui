@@ -8,10 +8,10 @@ import './index.less';
 
 const sc = createScopedClasses('radio');
 
-const InternalRadio: React.ForwardRefRenderFunction<
-  HTMLInputElement,
-  RadioProps
-> = (props, ref) => {
+const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
+  props,
+  ref,
+) => {
   const {
     value,
     checked: checkedProps,
@@ -31,7 +31,7 @@ const InternalRadio: React.ForwardRefRenderFunction<
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+  // useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   useEffect(() => {
     if (!autoFocus) {
@@ -67,6 +67,7 @@ const InternalRadio: React.ForwardRefRenderFunction<
 
   return (
     <label
+      ref={ref}
       style={style}
       className={classnames(
         `${prefixCls}-wrapper`,

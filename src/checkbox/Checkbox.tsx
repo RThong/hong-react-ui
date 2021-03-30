@@ -2,14 +2,14 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 
-export interface CheckboxProps {
+export interface CheckboxProps
+  extends Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'onChange'> {
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   autoFocus?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
-  className?: string;
   children?: React.ReactNode;
   value?: string;
 }
@@ -30,6 +30,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<
     children,
     className,
     style,
+    ...restProps
   } = props;
 
   const [checked, setChecked] = useState(
@@ -75,6 +76,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<
         className,
       )}
       style={style}
+      {...restProps}
     >
       <span
         className={classnames(sc(), {

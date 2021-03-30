@@ -21,20 +21,12 @@ group:
 
 <code src="./demo/base"></code>
 
-### 基本使用
+### 位置
 
-<code src="./demo/base"></code>
+<code src="./demo/placement"></code>
 
-### 基本使用
+### 触发方式
 
-<code src="./demo/base"></code>
-
-### 基本使用
-
-<code src="./demo/base"></code>
-
-### 基本使用
-
-<code src="./demo/base"></code>
+<code src="./demo/trigger"></code>
 
 ## API

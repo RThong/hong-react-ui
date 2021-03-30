@@ -56,7 +56,7 @@ export interface ButtonProps
 
 const sc = createScopedClasses('btn');
 
-const Button: React.FC<ButtonProps> = (props) => {
+const Button = React.forwardRef<any, ButtonProps>((props, ref) => {
   const {
     htmlType = 'button',
     loading,
@@ -71,6 +71,7 @@ const Button: React.FC<ButtonProps> = (props) => {
 
   return (
     <button
+      ref={ref}
       type={htmlType}
       className={classnames(
         sc(),
@@ -104,6 +105,6 @@ const Button: React.FC<ButtonProps> = (props) => {
       {children}
     </button>
   );
-};
+});
 
 export default Button;

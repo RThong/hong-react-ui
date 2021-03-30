@@ -9,7 +9,8 @@ interface Option {
   disabled?: boolean;
 }
 
-export interface GroupProps {
+export interface GroupProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   options?: Array<string | Option>;
   value?: string[];
   defaultValue?: string[];
@@ -23,7 +24,7 @@ export interface GroupProps {
 
 const sc = createScopedClasses('checkbox');
 
-const Group: React.FC<GroupProps> = (props) => {
+const Group = React.forwardRef<any, GroupProps>((props, ref) => {
   const {
     options = [],
     defaultValue = [],
@@ -32,6 +33,7 @@ const Group: React.FC<GroupProps> = (props) => {
     style,
     className,
     disabled = false,
+    ...restProps
   } = props;
 
   const [value, setValue] = useState(
@@ -84,7 +86,12 @@ const Group: React.FC<GroupProps> = (props) => {
   };
 
   return (
-    <div className={classnames(sc('group'), className)} style={style}>
+    <div
+      className={classnames(sc('group'), className)}
+      style={style}
+      ref={ref}
+      {...restProps}
+    >
       {localOptions.map((option) => (
         <Checkbox
           key={option.value}
@@ -99,6 +106,6 @@ const Group: React.FC<GroupProps> = (props) => {
       ))}
     </div>
   );
-};
+});
 
 export default Group;
