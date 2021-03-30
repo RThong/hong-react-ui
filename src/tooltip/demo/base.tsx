@@ -12,6 +12,7 @@ const Demo = () => {
     <div>
       <Button onClick={() => setVisible((v) => !v)}>click</Button>
       <Tooltip
+        title="prompt text"
         //  visible={visible}
         defaultVisible={true}
         trigger="click"

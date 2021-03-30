@@ -14,7 +14,7 @@ enum Trigger {
 }
 
 export interface TooltipProps {
-  title?: string;
+  title?: React.ReactNode;
   trigger?: Trigger;
   visible?: boolean;
   defaultVisible?: boolean;
@@ -23,7 +23,13 @@ export interface TooltipProps {
 const sc = createScopedClasses('tooltip');
 
 const Tooltip: React.FC<TooltipProps> = (props) => {
-  const { children, trigger = Trigger.hover, visible, defaultVisible } = props;
+  const {
+    children,
+    trigger = Trigger.hover,
+    visible,
+    defaultVisible,
+    title,
+  } = props;
 
   const [derivedVisible, setDerivedVisible] = useState(
     visible ?? defaultVisible ?? false,
@@ -90,8 +96,10 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
   // }
 
   useEffect(() => {
-    setRect(getRect());
-  }, [getRect]);
+    if (title !== undefined && title !== '') {
+      setRect(getRect());
+    }
+  }, [getRect, title]);
 
   useEffect(() => {
     if (visible !== undefined || trigger !== Trigger.click) {
@@ -149,7 +157,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     setDerivedVisible(false);
   };
 
-  return (
+  return title !== undefined && title !== '' ? (
     <>
       {React.cloneElement(children, {
         onClick: handleClick,
@@ -185,7 +193,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
                 <div className={classnames(sc('arrow'))}>
                   <span className={classnames(sc('arrow-content'))} />
                 </div>
-                <div className={classnames(sc('inner'))}>prompt text</div>
+                <div className={classnames(sc('inner'))}>{title}</div>
               </div>
             </div>,
             document.body,
@@ -193,6 +201,8 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
         }}
       </Transition>
     </>
+  ) : (
+    children
   );
 };
 
