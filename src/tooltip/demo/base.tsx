@@ -16,6 +16,7 @@ const Demo = () => {
         //  visible={visible}
         defaultVisible={true}
         trigger="click"
+        placement="bottom"
       >
         <span>Tooltip will show on mouse enter.</span>
       </Tooltip>

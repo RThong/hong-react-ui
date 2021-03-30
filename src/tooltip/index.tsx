@@ -1,8 +1,8 @@
-import { createScopedClasses } from '@/utils';
-import classnames from 'classnames';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Transition, Button } from '..';
+import { createScopedClasses } from '@/utils';
+import classnames from 'classnames';
+import { Transition } from '..';
 import { useDelayTime } from './hooks';
 
 import './index.less';
@@ -13,11 +13,19 @@ enum Trigger {
   'focus' = 'focus',
 }
 
+enum Placement {
+  'top' = 'top',
+  'left' = 'left',
+  'right' = 'right',
+  'bottom' = 'bottom',
+}
+
 export interface TooltipProps {
   title?: React.ReactNode;
   trigger?: Trigger;
   visible?: boolean;
   defaultVisible?: boolean;
+  placement?: Placement;
 }
 
 const sc = createScopedClasses('tooltip');
@@ -29,6 +37,7 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     visible,
     defaultVisible,
     title,
+    placement = Placement.top,
   } = props;
 
   const [derivedVisible, setDerivedVisible] = useState(
@@ -68,32 +77,33 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     const triggerHeight = triggerBottom - triggerTop;
     const { scrollX, scrollY } = window;
 
-    return {
-      x: triggerLeft + scrollX + triggerWidth / 2,
-      y: triggerTop + scrollY - 50,
-    };
-  }, []);
-  // const { position } = this.props
-  // switch (position) {
-  //   case 'top':
-  //     wrapperRef.style.left = triggerLeft + scrollX + triggerWidth / 2 + 'px'
-  //     wrapperRef.style.top = triggerTop + scrollY + 'px'
-  //     break
-  //   case 'bottom':
-  //     wrapperRef.style.left = triggerLeft + scrollX + triggerWidth / 2 + 'px'
-  //     wrapperRef.style.top = triggerBottom + scrollY + 'px'
-  //     break
-  //   case 'left':
-  //     wrapperRef.style.left = triggerLeft + scrollX + 'px'
-  //     wrapperRef.style.top = triggerTop + triggerHeight / 2 + scrollY + 'px'
-  //     break
-  //   case 'right':
-  //     wrapperRef.style.left = triggerRight + scrollX + 'px'
-  //     wrapperRef.style.top = triggerTop + triggerHeight / 2 + scrollY + 'px'
-  //     break
-  //   default:
-  //     break
-  // }
+    console.log('【tooltipRef.current】', tooltipRef.current);
+
+    switch (placement) {
+      case 'top':
+        return {
+          x: triggerLeft + scrollX + triggerWidth / 2,
+          y: triggerTop + scrollY,
+        };
+      case 'bottom':
+        return {
+          x: triggerLeft + scrollX + triggerWidth / 2,
+          y: triggerBottom + scrollY,
+        };
+      case 'left':
+        return {
+          x: triggerLeft + scrollX,
+          y: triggerTop + triggerHeight / 2 + scrollY,
+        };
+      case 'right':
+        return {
+          x: triggerRight + scrollX,
+          y: triggerTop + triggerHeight / 2 + scrollY,
+        };
+      default:
+        break;
+    }
+  }, [placement]);
 
   useEffect(() => {
     if (title !== undefined && title !== '') {
@@ -181,13 +191,16 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
               ref={ref}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={classnames(sc(), sc('placement-top'), sc('hidden'))}
+              className={classnames(
+                sc(),
+                sc(`placement-${placement}`),
+                sc('hidden'),
+              )}
               style={{
                 left: rect?.x,
                 top: rect?.y,
                 ...style,
               }}
-              // style="left: -556px; top: -563px; transform-origin: 50% 46px; pointer-events: none;"
             >
               <div className={classnames(sc('content'))}>
                 <div className={classnames(sc('arrow'))}>
