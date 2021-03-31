@@ -8,18 +8,9 @@ import { useDelayTime } from './hooks';
 import './index.less';
 import { useGetRef } from '@/hooks';
 
-enum Trigger {
-  'click' = 'click',
-  'hover' = 'hover',
-  'focus' = 'focus',
-}
+type Trigger = 'click' | 'hover' | 'focus';
 
-enum Placement {
-  'top' = 'top',
-  'left' = 'left',
-  'right' = 'right',
-  'bottom' = 'bottom',
-}
+type Placement = 'top' | 'left' | 'right' | 'bottom';
 
 export interface TooltipProps {
   title?: React.ReactNode;
@@ -37,11 +28,11 @@ const sc = createScopedClasses('tooltip');
 const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
   const {
     children,
-    trigger = Trigger.hover,
+    trigger = 'hover',
     visible,
     defaultVisible,
     title,
-    placement = Placement.top,
+    placement = 'top',
     onVisibleChange,
     overlayClassName,
     overlayStyle,
@@ -129,11 +120,12 @@ const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
   );
 
   useEffect(() => {
-    if (visible !== undefined || trigger !== Trigger.click) {
+    if (visible !== undefined || trigger !== 'click') {
       return;
     }
 
     const cb = (e: MouseEvent) => {
+      console.log(e.target);
       if (
         derivedVisible &&
         tooltipRef.current &&
@@ -142,43 +134,43 @@ const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
         handleVisibleChange(false);
       }
     };
-    document.body.addEventListener('click', cb);
+    document.addEventListener('click', cb);
 
     return () => {
-      document.body.removeEventListener('click', cb);
+      document.removeEventListener('click', cb);
     };
   }, [derivedVisible, trigger, visible, handleVisibleChange]);
 
   const handleClick = () => {
-    if (visible !== undefined || trigger !== Trigger.click) {
+    if (visible !== undefined || trigger !== 'click') {
       return;
     }
     handleVisibleChange(true);
   };
 
   const handleMouseEnter = () => {
-    if (visible !== undefined || trigger !== Trigger.hover) {
+    if (visible !== undefined || trigger !== 'hover') {
       return;
     }
     delaySetPopupVisible(() => handleVisibleChange(true));
   };
 
   const handleMouseLeave = () => {
-    if (visible !== undefined || trigger !== Trigger.hover) {
+    if (visible !== undefined || trigger !== 'hover') {
       return;
     }
     delaySetPopupVisible(() => handleVisibleChange(false), 0.1);
   };
 
   const handleFocus = () => {
-    if (visible !== undefined || trigger !== Trigger.focus) {
+    if (visible !== undefined || trigger !== 'focus') {
       return;
     }
     handleVisibleChange(true);
   };
 
   const handleBlur = () => {
-    if (visible !== undefined || trigger !== Trigger.focus) {
+    if (visible !== undefined || trigger !== 'focus') {
       return;
     }
     handleVisibleChange(false);
