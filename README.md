@@ -1,6 +1,6 @@
 # hong-react-ui
 
-## 一套好用的 PC 端 React 组件库
+### 一套基于 `React Hook` 和 `Typescript` 编写的 PC 端组件库
 
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
