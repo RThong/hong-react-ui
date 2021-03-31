@@ -4,10 +4,14 @@ import { createScopedClasses } from '@/utils';
 import { useGetRef } from '@/hooks';
 
 export interface CheckboxProps
-  extends Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'onChange'> {
+  extends Omit<
+    React.LabelHTMLAttributes<HTMLLabelElement>,
+    'onChange' | 'onClick'
+  > {
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
   autoFocus?: boolean;
   disabled?: boolean;
   style?: React.CSSProperties;
@@ -31,6 +35,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<any, CheckboxProps> = (
     children,
     className,
     style,
+    onClick,
     ...restProps
   } = props;
 
@@ -93,6 +98,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<any, CheckboxProps> = (
           onChange={handleChange}
           checked={checked}
           value={value}
+          onClick={onClick}
         />
         <span className={classnames(sc('inner'))} />
       </span>

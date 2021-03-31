@@ -24,6 +24,7 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
     children,
     style,
     className,
+    onClick,
     ...restProps
   } = props;
 
@@ -92,6 +93,7 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
           value={value}
           checked={checked}
           onChange={handleChange}
+          onClick={onClick}
         />
         <span className={classnames(`${prefixCls}-inner`)} />
       </span>

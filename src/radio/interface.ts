@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface RadioProps
-  extends Omit<React.HTMLAttributes<HTMLLabelElement>, 'onChange'> {
+  extends Omit<React.HTMLAttributes<HTMLLabelElement>, 'onChange' | 'onClick'> {
   checked?: boolean;
   defaultChecked?: boolean;
   autoFocus?: boolean;
@@ -13,6 +13,7 @@ export interface RadioProps
   children?: React.ReactNode;
   value?: any;
   onChange?: (e: RadioChangeEvent) => void;
+  onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 
 export interface RadioChangeEventTarget extends RadioProps {
