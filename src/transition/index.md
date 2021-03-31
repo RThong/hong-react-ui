@@ -3,6 +3,7 @@ title: Transition 过渡
 group:
   title: 其他
   path: /other
+  order: 16
 ---
 
 # Transition 过渡

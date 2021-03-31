@@ -3,6 +3,7 @@ title: Input 输入框
 group:
   title: 数据录入
   path: /data
+  order: 13
 ---
 
 # Input

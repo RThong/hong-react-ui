@@ -3,6 +3,7 @@ title: Checkbox 选择框
 group:
   title: 数据录入
   path: /data
+  order: 13
 ---
 
 # Checkbox 多选框

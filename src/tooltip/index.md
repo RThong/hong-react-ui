@@ -2,7 +2,8 @@
 title: Tooltip 文字提示
 group:
   title: 数据展示
-  path: /data
+  path: /show
+  order: 14
 ---
 
 # Tooltip 文字提示

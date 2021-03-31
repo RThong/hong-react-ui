@@ -3,6 +3,7 @@ title: Spin 加载中
 group:
   title: 信息反馈
   path: /feedback
+  order: 15
 ---
 
 # Spin 加载中

@@ -3,6 +3,7 @@ title: Button 按钮
 group:
   title: 通用
   path: /normal
+  order: 11
 ---
 
 # Button

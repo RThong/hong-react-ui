@@ -3,6 +3,7 @@ title: Modal 对话框
 group:
   title: 信息反馈
   path: /feedback
+  order: 15
 ---
 
 # Modal 对话框

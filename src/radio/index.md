@@ -3,6 +3,7 @@ title: Radio 单选框
 group:
   title: 数据录入
   path: /data
+  order: 13
 ---
 
 # Radio 单选框
