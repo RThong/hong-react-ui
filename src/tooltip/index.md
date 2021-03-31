@@ -30,3 +30,14 @@ group:
 <code src="./demo/trigger"></code>
 
 ## API
+
+| 属性名           | 描述                                           | 类型                | 默认值  |
+| ---------------- | ---------------------------------------------- | ------------------- | ------- |
+| title            | 提示文字                                       | `ReactNode`         | `-`     |
+| defaultVisible   | 默认是否显隐                                   | `boolean`           | `false` |
+| placement        | 气泡框位置，可选 `top` `left` `right` `bottom` | `string`            | `top`   |
+| trigger          | 触发行为，可选 `hover` \| `focus` \| `click`   | `string`            | `hover` |
+| visible          | 用于手动控制浮层显隐                           | `boolean`           | `false` |
+| onVisibleChange  | 显示隐藏的回调                                 | `(visible) => void` | `-`     |
+| overlayClassName | 卡片类名                                       | `string`            | `-`     |
+| overlayStyle     | 卡片样式                                       | `(visible) => void` | `-`     |
