@@ -1,6 +1,7 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
+import { useGetRef } from '@/hooks';
 
 export interface CheckboxProps
   extends Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'onChange'> {
@@ -37,13 +38,17 @@ const InternalCheckbox: React.ForwardRefRenderFunction<any, CheckboxProps> = (
     'checked' in props ? checkedProps : defaultChecked,
   );
 
+  const labelRef = useRef<HTMLLabelElement | null>(null);
+
+  const getInstance = useGetRef(ref, labelRef);
+
   useEffect(() => {
     if (!autoFocus) {
       return;
     }
 
-    ref?.current?.focus();
-  }, [autoFocus, ref]);
+    labelRef.current?.focus();
+  }, [autoFocus]);
 
   useEffect(() => {
     if (checkedProps !== undefined) {
@@ -65,7 +70,7 @@ const InternalCheckbox: React.ForwardRefRenderFunction<any, CheckboxProps> = (
 
   return (
     <label
-      ref={ref}
+      ref={getInstance}
       className={classnames(
         sc('wrapper'),
         {

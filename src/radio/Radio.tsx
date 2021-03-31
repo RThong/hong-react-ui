@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import { createScopedClasses } from '@/utils';
 
 import { RadioProps } from './interface';
 
 import './index.less';
+import { useGetRef } from '@/hooks';
 
 const sc = createScopedClasses('radio');
 
@@ -30,13 +31,16 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
     'checked' in props ? checkedProps : defaultChecked,
   );
 
+  const labelRef = useRef<HTMLLabelElement | null>(null);
+
+  const getInstance = useGetRef(ref, labelRef);
+
   useEffect(() => {
     if (!autoFocus) {
       return;
     }
-
-    ref?.current?.focus();
-  }, [autoFocus, ref]);
+    labelRef.current?.focus();
+  }, [autoFocus]);
 
   useEffect(() => {
     if (checkedProps !== undefined) {
@@ -64,7 +68,7 @@ const InternalRadio: React.ForwardRefRenderFunction<any, RadioProps> = (
 
   return (
     <label
-      ref={ref}
+      ref={getInstance}
       style={style}
       className={classnames(
         `${prefixCls}-wrapper`,

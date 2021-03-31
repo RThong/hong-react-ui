@@ -6,6 +6,7 @@ import Transition from '../transition';
 import { useDelayTime } from './hooks';
 
 import './index.less';
+import { useGetRef } from '@/hooks';
 
 enum Trigger {
   'click' = 'click',
@@ -27,11 +28,13 @@ export interface TooltipProps {
   defaultVisible?: boolean;
   placement?: Placement;
   onVisibleChange?: (visible: boolean) => void;
+  overlayClassName?: string;
+  overlayStyle?: React.CSSProperties;
 }
 
 const sc = createScopedClasses('tooltip');
 
-const Tooltip: React.FC<TooltipProps> = (props) => {
+const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
   const {
     children,
     trigger = Trigger.hover,
@@ -40,6 +43,8 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
     title,
     placement = Placement.top,
     onVisibleChange,
+    overlayClassName,
+    overlayStyle,
   } = props;
 
   const delaySetPopupVisible = useDelayTime();
@@ -66,6 +71,8 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
 
   // tooltip元素
   const tooltipRef = useRef<HTMLElement | null>(null);
+
+  const getInstance = useGetRef(ref, tooltipRef);
 
   const getRect = useCallback(() => {
     const {
@@ -200,23 +207,27 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
         beforeEnter={{ opacity: 0 }}
         afterEnter={{ opacity: 1 }}
         afterLeave={{ opacity: 0 }}
+        removeOnLeave={false}
       >
-        {({ style }, ref) => {
-          tooltipRef.current = ref.current;
+        {({ style }, popupRef) => {
           return ReactDOM.createPortal(
             <div
-              ref={ref}
+              ref={(val) => {
+                popupRef.current = val;
+                getInstance(val);
+              }}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={classnames(
                 sc(),
                 sc(`placement-${placement}`),
-                sc('hidden'),
+                overlayClassName,
               )}
               style={{
                 left: rect?.x,
                 top: rect?.y,
                 ...style,
+                ...overlayStyle,
               }}
             >
               <div className={classnames(sc('content'))}>
@@ -234,6 +245,6 @@ const Tooltip: React.FC<TooltipProps> = (props) => {
   ) : (
     (children as React.ReactElement)
   );
-};
+});
 
 export default Tooltip;
