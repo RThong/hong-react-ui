@@ -12,7 +12,8 @@ type Trigger = 'click' | 'hover' | 'focus';
 
 type Placement = 'top' | 'left' | 'right' | 'bottom';
 
-export interface TooltipProps {
+export interface TooltipProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'> {
   title?: React.ReactNode;
   trigger?: Trigger;
   visible?: boolean;
@@ -25,7 +26,7 @@ export interface TooltipProps {
 
 const sc = createScopedClasses('tooltip');
 
-const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
+const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
   const {
     children,
     trigger = 'hover',
@@ -61,7 +62,7 @@ const Tooltip = React.forwardRef<any, TooltipProps>((props, ref) => {
   const targetRef = useRef<HTMLElement | null>(null);
 
   // tooltip元素
-  const tooltipRef = useRef<HTMLElement | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
 
   const getInstance = useGetRef(ref, tooltipRef);
 
