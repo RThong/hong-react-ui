@@ -19,6 +19,7 @@ const notice: (config: ArgsProps & { type: NoticeType }) => MessageType = (
 
   const closePromise = new Promise<any>((resolve) => {
     if (!messageInstance) {
+      // 初始化时通过传入回调去拿到操作Notification的api对象
       Notification.init((instance: NotificationInstance) => {
         messageInstance = instance;
       });

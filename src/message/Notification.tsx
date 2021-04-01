@@ -60,6 +60,10 @@ const Notification = React.forwardRef<NotificationRef, any>((props, ref) => {
   );
 }) as CompoundedNotificationComponent;
 
+/**
+ * 初始化整个Notification，并将Notification相关api通过接收的回调暴露给外部进行调用
+ * @param callback
+ */
 Notification.init = (callback: (instance: NotificationInstance) => void) => {
   const div = document.createElement('div');
   document.body.appendChild(div);
