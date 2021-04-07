@@ -45,6 +45,9 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
     visible ?? defaultVisible ?? false,
   );
 
+  // transition过渡后真正看到的状态
+  const [popupVisible, setPopupVisible] = useState(false);
+
   useEffect(() => {
     if (visible === undefined) {
       return;
@@ -128,7 +131,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
     const cb = (e: MouseEvent) => {
       console.log(e.target);
       if (
-        derivedVisible &&
+        popupVisible &&
         tooltipRef.current &&
         !tooltipRef.current?.contains(e.target as HTMLElement)
       ) {
@@ -140,7 +143,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
     return () => {
       document.removeEventListener('click', cb);
     };
-  }, [derivedVisible, trigger, visible, handleVisibleChange]);
+  }, [trigger, visible, derivedVisible, handleVisibleChange, popupVisible]);
 
   const handleClick = () => {
     if (visible !== undefined || trigger !== 'click') {
@@ -200,6 +203,8 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
         beforeEnter={{ opacity: 0 }}
         afterEnter={{ opacity: 1 }}
         afterLeave={{ opacity: 0 }}
+        onBeforeEnter={() => setPopupVisible(true)}
+        afterClose={() => setPopupVisible(false)}
         removeOnLeave={false}
       >
         {({ style }, popupRef) => {
