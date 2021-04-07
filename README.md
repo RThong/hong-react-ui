@@ -2,7 +2,7 @@
 
 ### 一套基于 `React Hook` 和 `Typescript` 编写的 PC 端组件库
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/58bc469b579d4c5ab2062ed9c5d95d7c~tplv-k3u1fbpfcp-zoom-1.image)
+![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 > 本组件库仅供学习交流，请勿在生产环境中使用
 
