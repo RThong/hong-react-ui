@@ -32,7 +32,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "antd": "^4.12.3",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
+    "element-remove": "^1.0.4",
     "rc-queue-anim": "^1.8.5",
     "react": "^16.12.0",
     "react-dom": "^17.0.1"

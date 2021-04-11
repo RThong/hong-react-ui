@@ -17,4 +17,10 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
+  polyfill: {
+    imports: [
+      'element-remove', // Dom Api没有自动添加polyfill   需要手动添加
+      'babel-polyfill',
+    ],
+  },
 });
