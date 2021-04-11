@@ -129,7 +129,6 @@ const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
     }
 
     const cb = (e: MouseEvent) => {
-      console.log(e.target);
       if (
         popupVisible &&
         tooltipRef.current &&

@@ -14,4 +14,7 @@ export default defineConfig({
   alias: {
     'hong-react-ui/dist/index.css': '../index.less',
   },
+  targets: {
+    ie: 11,
+  },
 });
