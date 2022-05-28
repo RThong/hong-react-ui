@@ -3,13 +3,13 @@
  * desc: 方便的从数组生成 Checkbox 组。
  */
 import React, { useRef, useState } from 'react';
-import { Checkbox } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
+import { Checkbox } from '@/index';
 
 const plainOptions = ['Apple', 'Pear', 'Orange'];
 const options = [
   { label: 'Apple', value: 'Apple' },
-  { label: 'Pear', value: 'Pear', disabled: true },
+  { label: 'Pear', value: 'Pear' },
   { label: 'Orange', value: 'Orange' },
 ];
 const optionsWithDisabled = [
@@ -18,7 +18,7 @@ const optionsWithDisabled = [
   { label: 'Orange', value: 'Orange', disabled: false },
 ];
 
-const Demo = () => {
+const GroupDemo = () => {
   const onChange = (checkedValues: string[]) => {
     console.log('checked = ', checkedValues);
   };
@@ -29,6 +29,7 @@ const Demo = () => {
         options={plainOptions}
         defaultValue={['Apple']}
         onChange={onChange}
+        role="plainGroup"
       />
       <br />
       <br />
@@ -36,6 +37,7 @@ const Demo = () => {
         options={options}
         defaultValue={['Pear']}
         onChange={onChange}
+        role="Group"
       />
       <br />
       <br />
@@ -44,9 +46,10 @@ const Demo = () => {
         disabled
         defaultValue={['Apple']}
         onChange={onChange}
+        role="disabledGroup"
       />
     </div>
   );
 };
 
-export default Demo;
+export default GroupDemo;

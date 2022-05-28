@@ -3,14 +3,14 @@
  * desc: 联动 checkbox。
  */
 import React, { useState } from 'react';
-import { Checkbox, Button } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
+import { Button, Checkbox } from '@/index';
 
-const Demo = () => {
+const ControlledDemo = () => {
   const [checked, setChecked] = useState(true);
   const [disabled, setDisabled] = useState(false);
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     console.log('checked = ', e.target.checked);
     setChecked(e.target.checked);
   };
@@ -30,12 +30,22 @@ const Demo = () => {
   return (
     <>
       <p style={{ marginBottom: '20px' }}>
-        <Checkbox checked={checked} disabled={disabled} onChange={onChange}>
+        <Checkbox
+          checked={checked}
+          disabled={disabled}
+          onChange={onChange}
+          role="controlledCheckbox"
+        >
           {label}
         </Checkbox>
       </p>
       <p>
-        <Button type="primary" size="small" onClick={toggleChecked}>
+        <Button
+          type="primary"
+          size="small"
+          onClick={toggleChecked}
+          role="checkButton"
+        >
           {!checked ? 'Check' : 'Uncheck'}
         </Button>
         <Button
@@ -43,6 +53,7 @@ const Demo = () => {
           type="primary"
           size="small"
           onClick={toggleDisable}
+          role="disabledButton"
         >
           {!disabled ? 'Disable' : 'Enable'}
         </Button>
@@ -51,4 +62,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default ControlledDemo;

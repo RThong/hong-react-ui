@@ -3,7 +3,7 @@ import InternalCheckbox, { CheckboxProps } from './Checkbox';
 import Group from './Group';
 
 export { CheckboxProps } from './Checkbox';
-export { GroupProps } from './Group';
+export { GroupProps } from './types';
 
 interface CompoundedComponent
   extends React.ForwardRefExoticComponent<

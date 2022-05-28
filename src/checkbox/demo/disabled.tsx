@@ -3,17 +3,17 @@
  * desc: checkbox 不可用。
  */
 import React from 'react';
-import { Checkbox } from 'hong-react-ui';
 import 'hong-react-ui/dist/index.css';
+import { Checkbox } from '@/index';
 
-const Demo = () => {
+const DisabledCheckbox = () => {
   return (
     <div>
-      <Checkbox defaultChecked={false} disabled />
+      <Checkbox defaultChecked={false} disabled role="disabledFalse" />
       <br />
       <Checkbox defaultChecked disabled />
     </div>
   );
 };
 
-export default Demo;
+export default DisabledCheckbox;
